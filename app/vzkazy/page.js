@@ -2,6 +2,8 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import ShowCase from "@components/showcase";
 
+export const dynamic = "force-dynamic";
+
 export default async function Loading() {
 	const supabase = createServerComponentClient({ cookies });
 	const { data: posts, error } = await supabase
