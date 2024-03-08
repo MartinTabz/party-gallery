@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { supabase } from "@utils/supabase";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import crypto from "crypto";
 
 export default function NahratPage() {
+	const supabase = createClientComponentClient();
+
 	const [isLoading, setIsLoading] = useState(false);
 	const [uploadingError, setUploadingError] = useState("");
 	const [success, setSuccess] = useState(false);
@@ -21,6 +23,7 @@ export default function NahratPage() {
 
 		if (!imageFile) {
 			setUploadingError("Chybí obrázek");
+			return;
 		}
 
 		setIsLoading(true);
@@ -129,7 +132,12 @@ export default function NahratPage() {
 					{imageSrc && (
 						<Image width={300} height={200} src={imageSrc} alt="Obrázek" />
 					)}
-					<input type="file" multiple={false} onChange={onChangeUploadFile} />
+					<input
+						type="file"
+						accept="image/*"
+						multiple={false}
+						onChange={onChangeUploadFile}
+					/>
 					<div>
 						{isLoading ? (
 							<span>Odesílá se...</span>
