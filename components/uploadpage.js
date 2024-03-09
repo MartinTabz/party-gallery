@@ -71,7 +71,6 @@ export default function UploadComponent() {
 			}
 
 			const file = event.target.files[0];
-			console.log(file);
 
 			if (file.size > 5000000) {
 				setUploadingError("Obrázek je příliš velký");
@@ -79,9 +78,8 @@ export default function UploadComponent() {
 			}
 
 			new Compressor(file, {
-				quality: 0.6, // 0.6 can also be used, but its not recommended to go below.
+				quality: 0.6,
 				success: (res) => {
-					console.log(res)
 					setImageFile(res);
 				},
 			});
@@ -103,10 +101,6 @@ export default function UploadComponent() {
 		setIsLoading(false);
 		setSuccess(false);
 	};
-
-	const showFile = () => {
-		console.log(imageFile);
-	}
 
 	return (
 		<main>
@@ -163,7 +157,6 @@ export default function UploadComponent() {
 						)}
 					</div>
 					{uploadingError && <span>{uploadingError}</span>}
-					<button onClick={showFile}>Ukazat soubor</button>
 				</>
 			)}
 		</main>
