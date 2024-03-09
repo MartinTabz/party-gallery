@@ -1,23 +1,49 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
-import QRCode from "react-qr-code";
+import { cookies } from "next/headers";
+import jwt from "jsonwebtoken";
 
-export default function Home() {
-	const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/nahrat`;
+export default function Home({ searchParams }) {
+	const cookieStore = cookies();
+	const heslo = cookieStore.get("pass");
+
+	if (!heslo) {
+		return (
+			<main>
+				<h1>Něco se pokazilo</h1>
+				<span>Error 404</span>
+			</main>
+		);
+	}
+
+	const decoded = jwt.verify(heslo.value, process.env.JWT_HESLO);
+
+	if (!decoded?.pass || decoded.pass != process.env.HESLO) {
+		return (
+			<main>
+				<h1>Něco se pokazilo</h1>
+				<span>Error 404</span>
+			</main>
+		);
+	}
 
 	return (
 		<main>
-			<h2>Party Gallery</h2>
-			<QRCode
-				size={320}
-        style={{ margin: "50px"}}
-				value={uploadUrl}
-				viewBox={`0 0 320 320`}
-			/>
-      <br />
-			<Link href={uploadUrl}>Připojit se</Link>
+			<h1>Party Gallery</h1>
+			<h2>{searchParams.h}</h2>
+			<p>
+				Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Mauris dictum
+				facilisis augue. Aenean placerat. Sed vel lectus. Donec odio tempus
+				molestie, porttitor ut, iaculis quis, sem. In rutrum. Nunc auctor. Class
+				aptent taciti sociosqu ad litora torquent per conubia nostra, per
+				inceptos hymenaeos. In dapibus augue non sapien. Nulla est. Aliquam erat
+				volutpat. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+				Nulla est. Nulla quis diam. Duis sapien nunc, commodo et, interdum
+				suscipit, sollicitudin et, dolor. Aenean id metus id velit ullamcorper
+				pulvinar. Mauris dictum facilisis augue. Et harum quidem rerum facilis
+				est et expedita distinctio. Pellentesque sapien.
+			</p>
+			<br />
+			<Link href={`/nahrat`}>Nahrát vzkaz</Link>
 		</main>
 	);
 }
