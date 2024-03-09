@@ -12,6 +12,6 @@ export async function GET(request) {
 		cookies().set("pass", token);
 	}
 
-	const redirectURL = new URL("/", request.url);
+	const redirectURL = new URL("/vzkaz", request.url);
 	return NextResponse.redirect(redirectURL.toString());
 }

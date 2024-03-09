@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import UploadComponent from "@components/uploadpage";
+import Unauthorised from "@components/unauthorised";
 
 export const dynamic = "force-dynamic";
 
@@ -9,12 +10,7 @@ export default async function NahratPage() {
 	const heslo = cookieStore.get("pass");
 
 	if (!heslo) {
-		return (
-			<main>
-				<h1>Něco se pokazilo</h1>
-				<span>Error 404</span>
-			</main>
-		);
+		return <Unauthorised />;
 	}
 
 	let decoded;
@@ -26,12 +22,7 @@ export default async function NahratPage() {
 	}
 
 	if (!decoded?.pass || decoded.pass != process.env.HESLO) {
-		return (
-			<main>
-				<h1>Něco se pokazilo</h1>
-				<span>Error 404</span>
-			</main>
-		);
+		return <Unauthorised />;
 	}
 
 	return <UploadComponent />;

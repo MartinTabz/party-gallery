@@ -2,6 +2,8 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 import ShowCase from "@components/showcase";
+import QRCode from "react-qr-code";
+import Unauthorised from "@components/unauthorised";
 
 export const dynamic = "force-dynamic";
 
@@ -10,12 +12,7 @@ export default async function Loading() {
 	const heslo = cookieStore.get("pass");
 
 	if (!heslo) {
-		return (
-			<main>
-				<h1>Něco se pokazilo</h1>
-				<span>Error 404</span>
-			</main>
-		);
+		return <Unauthorised />;
 	}
 
 	let decoded;
@@ -27,12 +24,7 @@ export default async function Loading() {
 	}
 
 	if (!decoded?.pass || decoded.pass != process.env.HESLO) {
-		return (
-			<main>
-				<h1>Něco se pokazilo</h1>
-				<span>Error 404</span>
-			</main>
-		);
+		return <Unauthorised />;
 	}
 
 	const supabase = createServerComponentClient({ cookies });
@@ -45,10 +37,20 @@ export default async function Loading() {
 		throw new Error(error.message);
 	}
 
+	const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-callback?h=${process.env.HESLO}`;
+
 	return (
 		<main>
 			<h1>Vzkazy</h1>
 			<ShowCase posts={posts} />
+			<div>
+				<QRCode
+					size={320}
+					style={{ margin: "50px" }}
+					value={uploadUrl}
+					viewBox={`0 0 320 320`}
+				/>
+			</div>
 		</main>
 	);
 }
