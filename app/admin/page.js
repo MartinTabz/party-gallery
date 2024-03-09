@@ -1,17 +1,9 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-import AdminLoginForm from "@components/adminlogin";
 import MessageManage from "@components/messagemanage";
 
 export default async function AdminPage() {
 	const supabase = createServerComponentClient({ cookies });
-	const {
-		data: { user },
-	} = await supabase.auth.getUser();
-
-	if (!user) {
-		return <AdminLoginForm />;
-	}
 
 	const { data: posts, error } = await supabase
 		.from("posts")
