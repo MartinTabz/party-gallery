@@ -2,7 +2,9 @@ import Link from "next/link";
 import { cookies } from "next/headers";
 import jwt from "jsonwebtoken";
 
-export default function Home({ searchParams }) {
+export const dynamic = "force-dynamic";
+
+export default async function Home({ searchParams }) {
 	const cookieStore = cookies();
 	const heslo = cookieStore.get("pass");
 
@@ -15,7 +17,13 @@ export default function Home({ searchParams }) {
 		);
 	}
 
-	const decoded = jwt.verify(heslo.value, process.env.JWT_HESLO);
+	let decoded;
+
+	try {
+		decoded = await jwt.verify(heslo.value, process.env.JWT_HESLO);
+	} catch (error) {
+		throw new Error("Něco se pokazilo při dekodovaní hesla")
+	}
 
 	if (!decoded?.pass || decoded.pass != process.env.HESLO) {
 		return (

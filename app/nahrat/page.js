@@ -1,153 +1,38 @@
-"use client";
+import jwt from "jsonwebtoken";
+import { cookies } from "next/headers";
+import UploadComponent from "@components/uploadpage";
 
-import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Image from "next/image";
-import crypto from "crypto";
+export const dynamic = "force-dynamic";
 
-export default function NahratPage() {
-	const supabase = createClientComponentClient();
+export default async function NahratPage() {
+	const cookieStore = cookies();
+	const heslo = cookieStore.get("pass");
 
-	const [isLoading, setIsLoading] = useState(false);
-	const [uploadingError, setUploadingError] = useState("");
-	const [success, setSuccess] = useState(false);
+	if (!heslo) {
+		return (
+			<main>
+				<h1>Něco se pokazilo</h1>
+				<span>Error 404</span>
+			</main>
+		);
+	}
 
-	const [name, setName] = useState("");
-	const [message, setMessage] = useState("");
-	const [imageFile, setImageFile] = useState();
-	const [imageSrc, setImageSrc] = useState();
+	let decoded;
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+	try {
+		decoded = await jwt.verify(heslo.value, process.env.JWT_HESLO);
+	} catch (error) {
+		throw new Error("Něco se pokazilo při dekodovaní hesla");
+	}
 
-		if (!imageFile) {
-			setUploadingError("Chybí obrázek");
-			return;
-		}
+	if (!decoded?.pass || decoded.pass != process.env.HESLO) {
+		return (
+			<main>
+				<h1>Něco se pokazilo</h1>
+				<span>Error 404</span>
+			</main>
+		);
+	}
 
-		setIsLoading(true);
-
-		let path;
-
-		do {
-			const fileExt = imageFile.name.split(".").pop();
-			const filePath = `${uuidv4()}-${crypto
-				.randomBytes(16)
-				.toString("hex")}.${fileExt}`;
-
-			const { data: upload_data, error: upload_error } = await supabase.storage
-				.from("photos")
-				.upload(filePath, imageFile);
-
-			if (upload_error && !upload_error.error === "Duplicate") {
-				setUploadingError(upload_error.message);
-			}
-
-			if (upload_data.path) {
-				path = upload_data.path;
-			}
-		} while (!path);
-
-		const { error } = await supabase.from("posts").insert({
-			name: name || null,
-			message: message || null,
-			image_name: path,
-		});
-
-		if (error) {
-			setUploadingError(error.message);
-		} else {
-			setSuccess(true);
-		}
-	};
-
-	const onChangeUploadFile = async (event) => {
-		try {
-			if (!event.target.files || event.target.files.length === 0) {
-				console.log("You must select an image to upload.");
-				return;
-			}
-
-			const file = event.target.files[0];
-			console.log(file);
-
-			setImageFile(file);
-			setImageSrc(URL.createObjectURL(file));
-		} catch (error) {
-			console.log(error);
-		}
-	};
-
-	const handleRestart = () => {
-		setUploadingError("");
-
-		setName("");
-		setMessage("");
-		setImageFile();
-		setImageSrc();
-
-		setIsLoading(false);
-		setSuccess(false);
-	};
-
-	return (
-		<main>
-			{success ? (
-				<main>
-					<h1>Hotovo, vzkaz byl odeslán!</h1>
-					<button onClick={handleRestart}>Nahrát další</button>
-				</main>
-			) : (
-				<>
-					<h1>Poslat vzkaz</h1>
-					<div>
-						<div>
-							<label htmlFor="name">Jméno (nepovinné)</label>
-							<span>{name.length}/15</span>
-						</div>
-						<input
-							id="name"
-							name="name"
-							value={name}
-							onChange={(e) => {
-								if (e.target.value.length <= 15) {
-									setName(e.target.value);
-								}
-							}}
-						/>
-					</div>
-					<div>
-						<span>{message.length}/100</span>
-						<textarea
-							value={message}
-							onChange={(e) => {
-								if (e.target.value.length <= 100) {
-									setMessage(e.target.value);
-								}
-							}}
-							placeholder="Vzkaz"
-						/>
-					</div>
-					{imageSrc && (
-						<Image width={300} height={200} src={imageSrc} alt="Obrázek" />
-					)}
-					<input
-						type="file"
-						accept="image/*"
-						multiple={false}
-						onChange={onChangeUploadFile}
-					/>
-					<div>
-						{isLoading ? (
-							<span>Odesílá se...</span>
-						) : (
-							<button onClick={handleSubmit}>Odeslat</button>
-						)}
-					</div>
-					{uploadingError && <span>{uploadingError}</span>}
-				</>
-			)}
-		</main>
-	);
+	return <UploadComponent />;
 }
