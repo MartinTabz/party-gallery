@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import crypto from "crypto";
+import Compressor from "compressorjs";
 
 export default function UploadComponent() {
 	const supabase = createClientComponentClient();
@@ -72,10 +73,22 @@ export default function UploadComponent() {
 			const file = event.target.files[0];
 			console.log(file);
 
-			setImageFile(file);
+			if (file.size > 5000000) {
+				setUploadingError("Obrázek je příliš velký");
+				return;
+			}
+
+			new Compressor(file, {
+				quality: 0.6, // 0.6 can also be used, but its not recommended to go below.
+				success: (res) => {
+					console.log(res)
+					setImageFile(res);
+				},
+			});
+			
 			setImageSrc(URL.createObjectURL(file));
 		} catch (error) {
-			console.log(error);
+			setUploadingError(error.message);
 		}
 	};
 
@@ -90,6 +103,10 @@ export default function UploadComponent() {
 		setIsLoading(false);
 		setSuccess(false);
 	};
+
+	const showFile = () => {
+		console.log(imageFile);
+	}
 
 	return (
 		<main>
@@ -146,6 +163,7 @@ export default function UploadComponent() {
 						)}
 					</div>
 					{uploadingError && <span>{uploadingError}</span>}
+					<button onClick={showFile}>Ukazat soubor</button>
 				</>
 			)}
 		</main>
