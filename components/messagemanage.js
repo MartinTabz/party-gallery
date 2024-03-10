@@ -5,7 +5,7 @@ import Image from "next/image";
 import axios from "axios";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-export default function MessageManage({ posts: rawPosts }) {
+export default function MessageManage({ posts: rawPosts, emailPassword }) {
 	const supabase = createClientComponentClient();
 	const [posts, setPosts] = useState(rawPosts);
 
@@ -84,6 +84,18 @@ export default function MessageManage({ posts: rawPosts }) {
 				</div>
 			)}
 			<div>
+				<div>
+					<h3>Přístup na stránku ke stažení</h3>
+					<p>
+						Stránka, kde se stahují všechny fotky je zabezpečená. Tento odkaz
+						zkopírujte a pošlete emailem. Uživatele aplikace po prokliknutí
+						odkáže na stránku
+					</p>
+					<div>
+						<span>{`${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-allphotos?h=${emailPassword}`}</span>
+						<div>Zkopirovat</div>
+					</div>
+				</div>
 				{posts.map((post) => (
 					<div key={post.id}>
 						<div>
