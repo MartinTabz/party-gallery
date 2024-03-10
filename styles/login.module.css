@@ -1,0 +1,95 @@
+.main_section {
+	width: 100%;
+	height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+   text-align: center;
+}
+.main_area {
+   padding: 25px;
+   width: 300px;
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+   box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.5);
+   border-radius: 20px;
+}
+.main_area > h1 {
+   font-size: 1.17rem;
+}
+.btn {
+	width: 100%;
+	position: relative;
+	height: 45px;
+}
+.btn > button {
+	background-color: var(--clr-main);
+	border: 3px solid var(--clr-main);
+	color: var(--clr-white);
+	letter-spacing: 1px;
+	cursor: pointer;
+	font-size: 1rem;
+	text-transform: uppercase;
+	font-weight: 700;
+	transition: var(--ef-trans);
+	border-radius: 8px;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	top: 0;
+	height: 100%;
+}
+.btn > span {
+	background-color: var(--clr-main);
+	border: 3px solid var(--clr-main);
+	color: var(--clr-white);
+	letter-spacing: 1px;
+	cursor: pointer;
+	font-size: 1rem;
+	text-transform: uppercase;
+	font-weight: 700;
+	transition: var(--ef-trans);
+	border-radius: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	width: 100%;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	top: 0;
+	height: 100%;
+}
+.spinner {
+	border-radius: 50%;
+	animation: spin 1000ms linear infinite;
+	font-size: 1.5rem;
+	color: var(--clr-main);
+}
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+.btn > button:hover {
+	background-color: var(--clr-white);
+	color: var(--clr-main);
+}
+.input {
+	font-size: 1rem;
+	padding: 5px;
+	border: 1px solid grey;
+	border-radius: 8px;
+	outline: none;
+}
+.input:focus {
+	outline: none;
+	border: 1px solid grey;
+}

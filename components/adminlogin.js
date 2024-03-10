@@ -2,7 +2,9 @@
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
+import style from "@styles/login.module.css";
 import { useRouter } from "next/navigation";
+import { FiLoader } from "react-icons/fi";
 
 export default function AdminLoginForm() {
 	const supabase = createClientComponentClient();
@@ -25,33 +27,38 @@ export default function AdminLoginForm() {
 	};
 
 	return (
-		<div>
-			<h1>Přihlášení do administrace</h1>
-			<div>
+		<main className={style.main_section}>
+			<div className={style.main_area}>
+				<h1>Přihlášení do administrace</h1>
 				<input
 					type="email"
 					value={email}
-               placeholder="E-Mail"
-               id="email"
-               name="email"
+					placeholder="E-Mail"
+					className={style.input}
+					disabled={isLoading}
+					id="email"
+					name="email"
 					onChange={(e) => setEmail(e.target.value)}
 				/>
-			</div>
-			<div>
 				<input
 					type="password"
 					value={password}
-               placeholder="Heslo"
+					className={style.input}
+					disabled={isLoading}
+					placeholder="Heslo"
 					onChange={(e) => setPassword(e.target.value)}
 				/>
+
+				<div className={style.btn}>
+					{isLoading ? (
+						<span>
+							<FiLoader color="var(--clr-white)" className={style.spinner} />
+						</span>
+					) : (
+						<button onClick={handleSubmit}>Přihlásit se</button>
+					)}
+				</div>
 			</div>
-			<div>
-				{isLoading ? (
-					<span>Načítání</span>
-				) : (
-					<button onClick={handleSubmit}>Přihlásit se</button>
-				)}
-			</div>
-		</div>
+		</main>
 	);
 }
