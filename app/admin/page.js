@@ -2,6 +2,8 @@ import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import MessageManage from "@components/messagemanage";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
 	const supabase = createServerComponentClient({ cookies });
 

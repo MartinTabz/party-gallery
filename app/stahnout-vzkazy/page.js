@@ -4,6 +4,8 @@ import MessageDownload from "@components/messagedownload";
 import jwt from "jsonwebtoken";
 import Unauthorised from "@components/unauthorised";
 
+export const dynamic = "force-dynamic";
+
 export default async function StahnoutVzkazyPage() {
 	const cookieStore = cookies();
 	const heslo = cookieStore.get("allphpass");
