@@ -1,5 +1,53 @@
+@font-face {
+	font-family: OpenSans;
+	src: url(../public/fonts/open-sans/OpenSans-Light.ttf);
+	font-display: swap;
+	font-weight: 300;
+}
+@font-face {
+	font-family: OpenSans;
+	src: url(../public/fonts/open-sans/OpenSans-Regular.ttf);
+	font-display: swap;
+	font-weight: normal;
+}
+@font-face {
+	font-family: OpenSans;
+	src: url(../public/fonts/open-sans/OpenSans-Medium.ttf);
+	font-display: swap;
+	font-weight: 500;
+}
+@font-face {
+	font-family: OpenSans;
+	src: url(../public/fonts/open-sans/OpenSans-SemiBold.ttf);
+	font-display: swap;
+	font-weight: 600;
+}
+@font-face {
+	font-family: OpenSans;
+	src: url(../public/fonts/open-sans/OpenSans-Bold.ttf);
+	font-display: swap;
+	font-weight: 700;
+}
+@font-face {
+	font-family: OpenSans;
+	src: url(../public/fonts/open-sans/OpenSans-ExtraBold.ttf);
+	font-display: swap;
+	font-weight: 800;
+}
+
+:root {
+	--clr-main: rgb(41, 96, 222);
+	--clr-black: #1b1b1b;
+	--clr-white: #f6f6f6;
+	--ef-trans: 250ms ease-in-out;
+}
+
 * {
 	padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: "OpenSans", sans-serif;
+}
+body {
+	background-color: var(--clr-white);
 }

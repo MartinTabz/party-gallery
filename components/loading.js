@@ -1,7 +1,10 @@
+import style from "@styles/loading.module.css";
+import { FiLoader } from "react-icons/fi";
+
 export default function LoadingComponent() {
 	return (
-		<>
-			<h1>Načítání</h1>
-		</>
+		<main className={style.area}>
+			<FiLoader color="var(--clr-main)" className={style.spinner} />
+		</main>
 	);
 }

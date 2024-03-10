@@ -1,0 +1,22 @@
+.area {
+	width: 100%;
+	min-height: 500px;
+	height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.spinner {
+	border-radius: 50%;
+	animation: spin 500ms linear infinite;
+	font-size: 3rem;
+	color: var(--clr-main);
+}
+@keyframes spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
