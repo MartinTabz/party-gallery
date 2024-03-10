@@ -5,6 +5,7 @@ import QRCode from "react-qr-code";
 import Unauthorised from "@components/unauthorised";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
+import style from "@styles/home.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -44,25 +45,26 @@ export default async function Home() {
 	);
 
 	return (
-		<main>
-			<h1>{mainPageText.value}</h1>
-			<div>
-				<QRCode
-					size={320}
-					style={{ margin: "50px" }}
-					value={uploadUrl}
-					viewBox={`0 0 320 320`}
+		<main className={style.main_section}>
+			<div className={style.area}>
+				<h1>{mainPageText.value}</h1>
+
+				<div className={style.qr}>
+					<QRCode size={280} value={uploadUrl} viewBox={`0 0 280 280`} />
+				</div>
+
+				<p>{mainPageDesc.value}</p>
+				<Link href={`/prezentace`}>Prezentace</Link>
+			</div>
+			<div className={style.background}>
+				<div></div>
+				<Image
+					src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/settings/${mainPageImg.value}`}
+					alt="Obrázek v pozadí"
+					width={1920}
+					height={1080}
 				/>
 			</div>
-			<Image
-				src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/settings/${mainPageImg.value}`}
-				alt="Obrazek"
-				width={500}
-				height={350}
-			/>
-			<p>{mainPageDesc.value}</p>
-			<br />
-			<Link href={`/prezentace`}>Prezentace</Link>
 		</main>
 	);
 }
