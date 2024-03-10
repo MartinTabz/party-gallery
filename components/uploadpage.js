@@ -6,6 +6,9 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import crypto from "crypto";
 import Compressor from "compressorjs";
+import style from "@styles/message.module.css";
+import { FiLoader } from "react-icons/fi";
+import { GiClick } from "react-icons/gi";
 
 export default function UploadComponent() {
 	const supabase = createClientComponentClient();
@@ -83,7 +86,7 @@ export default function UploadComponent() {
 					setImageFile(res);
 				},
 			});
-			
+
 			setImageSrc(URL.createObjectURL(file));
 		} catch (error) {
 			setUploadingError(error.message);
@@ -103,62 +106,78 @@ export default function UploadComponent() {
 	};
 
 	return (
-		<main>
-			{success ? (
-				<main>
-					<h1>Hotovo, vzkaz byl odeslán!</h1>
-					<button onClick={handleRestart}>Nahrát další</button>
-				</main>
-			) : (
-				<>
-					<h1>Poslat vzkaz</h1>
-					<div>
-						<div>
-							<label htmlFor="name">Jméno (nepovinné)</label>
-							<span>{name.length}/15</span>
+		<main className={style.main_section}>
+			<div className={style.area}>
+				{success ? (
+					<div className={style.success}>
+						<h2>Hotovo, vzkaz byl odeslán!</h2>
+						<button onClick={handleRestart}>Nahrát další</button>
+					</div>
+				) : (
+					<div className={style.input_form}>
+						<div className={style.input_area}>
+							<h1>Nahrát vzkaz</h1>
+							<div className={style.input_inner}>
+								<div>
+									<label htmlFor="name">Jméno (nepovinné)</label>
+									<span>{name.length}/15</span>
+								</div>
+								<input
+									id="name"
+									name="name"
+									disabled={isLoading}
+									value={name}
+									onChange={(e) => {
+										if (e.target.value.length <= 15) {
+											setName(e.target.value);
+										}
+									}}
+								/>
+							</div>
+							<div className={style.textarea_inner}>
+								<textarea
+									value={message}
+									disabled={isLoading}
+									onChange={(e) => {
+										if (e.target.value.length <= 100) {
+											setMessage(e.target.value);
+										}
+									}}
+									placeholder="Vzkaz"
+								/>
+								<span>{message.length}/100</span>
+							</div>
+							{imageSrc && (
+								<Image className={style.inputed_img} width={400} height={200} src={imageSrc} alt="Obrázek" />
+							)}
+							<div className={style.file_input}>
+								<GiClick />
+								Klikni a nahraj obrázek
+								<input
+									type="file"
+									disabled={isLoading}
+									accept="image/*"
+									multiple={false}
+									onChange={onChangeUploadFile}
+								/>
+							</div>
 						</div>
-						<input
-							id="name"
-							name="name"
-							value={name}
-							onChange={(e) => {
-								if (e.target.value.length <= 15) {
-									setName(e.target.value);
-								}
-							}}
-						/>
+						<div className={style.btn}>
+							{isLoading ? (
+								<span>
+									<FiLoader
+										color="var(--clr-white)"
+										className={style.spinner}
+									/>
+								</span>
+							) : (
+								<button onClick={handleSubmit}>Odeslat</button>
+							)}
+						</div>
+						{uploadingError && <span>{uploadingError}</span>}
 					</div>
-					<div>
-						<span>{message.length}/100</span>
-						<textarea
-							value={message}
-							onChange={(e) => {
-								if (e.target.value.length <= 100) {
-									setMessage(e.target.value);
-								}
-							}}
-							placeholder="Vzkaz"
-						/>
-					</div>
-					{imageSrc && (
-						<Image width={300} height={200} src={imageSrc} alt="Obrázek" />
-					)}
-					<input
-						type="file"
-						accept="image/*"
-						multiple={false}
-						onChange={onChangeUploadFile}
-					/>
-					<div>
-						{isLoading ? (
-							<span>Odesílá se...</span>
-						) : (
-							<button onClick={handleSubmit}>Odeslat</button>
-						)}
-					</div>
-					{uploadingError && <span>{uploadingError}</span>}
-				</>
-			)}
+				)}
+			</div>
 		</main>
 	);
 }
