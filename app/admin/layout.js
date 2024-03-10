@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import AdminLoginForm from "@components/adminlogin";
+import AdminNavigation from "@components/adminnav";
 
 export default async function AdminPage({ children }) {
 	const supabase = createServerComponentClient({ cookies });
@@ -12,5 +13,10 @@ export default async function AdminPage({ children }) {
 		return <AdminLoginForm />;
 	}
 
-	return <main>{children}</main>;
+	return (
+		<>
+			<AdminNavigation />
+			<main>{children}</main>
+		</>
+	);
 }

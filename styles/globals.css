@@ -39,7 +39,11 @@
 	--clr-main: rgb(41, 96, 222);
 	--clr-black: #1b1b1b;
 	--clr-white: #f6f6f6;
+
 	--ef-trans: 250ms ease-in-out;
+
+	--width: 95%;
+	--max-width: 750px;
 }
 
 * {

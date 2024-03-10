@@ -1,0 +1,52 @@
+.section {
+   width: 100%;
+   height: 80px;
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+}
+.area {
+   width: var(--width);
+   height: 100%;
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   max-width: var(--max-width);
+}
+.area > h1 {
+   font-size: 1.5rem;
+}
+.area > nav {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   gap: 5px;
+}
+.area > nav > a {
+   text-decoration: none;
+   font-weight: 700;
+   transition: var(--ef-trans);
+   padding: 0 10px;
+   cursor: pointer;
+   color: var(--clr-black);
+}
+.area > nav > a:hover {
+   color: var(--clr-main);
+}
+.area > button {
+   background-color: transparent;
+   border: none;
+   transition: var(--ef-trans);
+   cursor: pointer;
+   color: var(--clr-black);
+   font-size: 2rem;
+}
+.area > button:hover {
+   color: var(--clr-main);
+}
+@media only screen and (max-width: 500px) {
+   .area > h1 {
+      display: none;
+   }
+}
