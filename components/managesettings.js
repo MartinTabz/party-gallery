@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import crypto from "crypto";
+import Compressor from "compressorjs";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -21,15 +21,156 @@ export default function ManageSettings({ settings }) {
 	const [mainPageText, setMainPageText] = useState(settings[4].value);
 	const [presentationDelay, setPresentationDelay] = useState(settings[5].value);
 
-	const changeImage = async (event, tag) => {
+	const [publicPageImageFile, setPublicPageImageFile] = useState();
+	const [publicPageImageSrc, setPublicPageImageSrc] = useState();
+
+	const [mainPageImageFile, setMainPageImageFile] = useState();
+	const [mainPageImageSrc, setMainPageImageSrc] = useState();
+
+	const handleSave = async (e) => {
+		e.preventDefault();
 		setIsLoading(true);
 
 		try {
+			if (publicPageImageFile) {
+				const { error: file_delete_error } = await supabase.storage
+					.from("settings")
+					.remove(settings[1].value);
+
+				if (file_delete_error) {
+					setError((uploadError) => [
+						...uploadError,
+						file_delete_error.message,
+					]);
+				} else {
+					const fileExt = publicPageImageFile.name.split(".").pop();
+					const filePath = `${uuidv4()}.${fileExt}`;
+
+					const { error } = await supabase
+						.from("settings")
+						.update({ value: filePath })
+						.eq("name", settings[1].name)
+						.select()
+						.single();
+
+					if (error) {
+						setError((uploadError) => [
+							...uploadError,
+							"Něco se pokazilo při zapisování nového obrázku do tabulky",
+						]);
+					}
+
+					supabase.storage
+						.from("settings")
+						.upload(filePath, publicPageImageFile);
+				}
+			}
+
+			if (mainPageImageFile) {
+				const { error: file_delete_error } = await supabase.storage
+					.from("settings")
+					.remove(settings[3].value);
+
+				if (file_delete_error) {
+					setError((uploadError) => [
+						...uploadError,
+						file_delete_error.message,
+					]);
+				} else {
+					const fileExt = mainPageImageFile.name.split(".").pop();
+					const filePath = `${uuidv4()}.${fileExt}`;
+
+					const { error } = await supabase
+						.from("settings")
+						.update({ value: filePath })
+						.eq("name", settings[3].name)
+						.select()
+						.single();
+
+					if (error) {
+						setError((uploadError) => [
+							...uploadError,
+							"Něco se pokazilo při zapisování nového obrázku do tabulky",
+						]);
+					}
+
+					supabase.storage
+						.from("settings")
+						.upload(filePath, mainPageImageFile);
+				}
+			}
+
+			if (mainPageDesc != settings[0].value) {
+				const { error } = await supabase
+					.from("settings")
+					.update({ value: mainPageDesc })
+					.eq("name", settings[0].name)
+					.select();
+
+				if (error) {
+					setError((uploadError) => [
+						...uploadError,
+						"Něco se pokazilo při náhrávání popisku na hlavní stránce",
+					]);
+				}
+			}
+
+			if (publicPageText != settings[2].value) {
+				const { error } = await supabase
+					.from("settings")
+					.update({ value: publicPageText })
+					.eq("name", settings[2].name)
+					.select();
+
+				if (error) {
+					setError((uploadError) => [
+						...uploadError,
+						"Něco se pokazilo při nahrávání veřejného textu",
+					]);
+				}
+			}
+
+			if (mainPageText != settings[4].value) {
+				const { error } = await supabase
+					.from("settings")
+					.update({ value: mainPageText })
+					.eq("name", settings[4].name)
+					.select();
+
+				if (error) {
+					setError((uploadError) => [
+						...uploadError,
+						"Něco se pokazilo při nahrávání textu na hlavní stránce",
+					]);
+				}
+			}
+
+			if (presentationDelay != settings[5].value) {
+				const { error } = await supabase
+					.from("settings")
+					.update({ value: presentationDelay })
+					.eq("name", settings[5].name)
+					.select();
+
+				if (error) {
+					setError((uploadError) => [
+						...uploadError,
+						"Něco se pokazilo při nahrávání textu na hlavní stránce",
+					]);
+				}
+			}
+		} catch (error) {
+			setError((uploadError) => [...uploadError, error.message]);
+		}
+
+		setIsLoading(false);
+		return router.refresh();
+	};
+
+	const onChangeUploadFile = async (event, tag) => {
+		try {
 			if (!event.target.files || event.target.files.length === 0) {
-				setError((uploadError) => [
-					...uploadError,
-					"Musíte vybrat obrázek k nahrání",
-				]);
+				console.log("You must select an image to upload.");
 				return;
 			}
 
@@ -43,125 +184,25 @@ export default function ManageSettings({ settings }) {
 				return;
 			}
 
-			const { error: file_delete_error } = await supabase.storage
-				.from("settings")
-				.remove(settings[tag].value);
+			new Compressor(file, {
+				quality: 0.6,
+				success: (res) => {
+					if (tag == 1) {
+						setPublicPageImageFile(res);
+					} else {
+						setMainPageImageFile(res);
+					}
+				},
+			});
 
-			if (file_delete_error) {
-				setError((uploadError) => [
-					...uploadError,
-					"Něco se pokazilo při mazání starého obrázku",
-				]);
-				return;
-			}
-
-			let path;
-
-			do {
-				const fileExt = file.name.split(".").pop();
-				const filePath = `${uuidv4()}-${crypto
-					.randomBytes(16)
-					.toString("hex")}.${fileExt}`;
-
-				const { data: upload_data, error: upload_error } =
-					await supabase.storage.from("settings").upload(filePath, file);
-
-				if (upload_error && !upload_error.error === "Duplicate") {
-					setError((uploadError) => [...uploadError, upload_error.message]);
-					return;
-				}
-
-				if (upload_data.path) {
-					path = upload_data.path;
-				}
-
-				if (tag == 1) {
-					setPublicPageImg(filePath);
-				} else if (tag == 3) {
-					setMainPageImg(filePath);
-				}
-			} while (!path);
-
-			const { error } = await supabase
-				.from("settings")
-				.update({ value: path })
-				.eq("name", settings[tag].name)
-				.select();
-
-			if (error) {
-				setError((uploadError) => [...uploadError, error.message]);
+			if (tag == 1) {
+				setPublicPageImageSrc(URL.createObjectURL(file));
+			} else {
+				setMainPageImageSrc(URL.createObjectURL(file));
 			}
 		} catch (error) {
 			setError((uploadError) => [...uploadError, error.message]);
 		}
-
-		setIsLoading(false);
-	};
-
-	const handleSave = async (e) => {
-		e.preventDefault();
-
-		if (mainPageDesc != settings[0].value) {
-			const { error } = await supabase
-				.from("settings")
-				.update({ value: mainPageDesc })
-				.eq("name", settings[0].name)
-				.select();
-
-			if (error) {
-				setError((uploadError) => [
-					...uploadError,
-					"Něco se pokazilo při náhrávání popisku na hlavní stránce",
-				]);
-			}
-		}
-
-		if (publicPageText != settings[2].value) {
-			const { error } = await supabase
-				.from("settings")
-				.update({ value: publicPageText })
-				.eq("name", settings[2].name)
-				.select();
-
-			if (error) {
-				setError((uploadError) => [
-					...uploadError,
-					"Něco se pokazilo při nahrávání veřejného textu",
-				]);
-			}
-		}
-
-		if (mainPageText != settings[4].value) {
-			const { error } = await supabase
-				.from("settings")
-				.update({ value: mainPageText })
-				.eq("name", settings[4].name)
-				.select();
-
-			if (error) {
-				setError((uploadError) => [
-					...uploadError,
-					"Něco se pokazilo při nahrávání textu na hlavní stránce",
-				]);
-			}
-		}
-
-		if (presentationDelay != settings[5].value) {
-			const { error } = await supabase
-				.from("settings")
-				.update({ value: presentationDelay })
-				.eq("name", settings[5].name)
-				.select();
-
-			if (error) {
-				setError((uploadError) => [
-					...uploadError,
-					"Něco se pokazilo při nahrávání textu na hlavní stránce",
-				]);
-			}
-		}
-
-		setIsLoading(false);
 	};
 
 	return (
@@ -180,7 +221,11 @@ export default function ManageSettings({ settings }) {
 				<h2>Veřejná stránka</h2>
 				<div>
 					<Image
-						src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/settings/${publicPageImg}`}
+						src={
+							publicPageImageSrc
+								? publicPageImageSrc
+								: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/settings/${publicPageImg}`
+						}
 						alt="Obrazek nastaveni"
 						width={300}
 						height={200}
@@ -189,7 +234,7 @@ export default function ManageSettings({ settings }) {
 						type="file"
 						accept="image/*"
 						multiple={false}
-						onChange={(event) => changeImage(event, 1)}
+						onChange={(event) => onChangeUploadFile(event, 1)}
 					/>
 				</div>
 				<div>
@@ -208,7 +253,11 @@ export default function ManageSettings({ settings }) {
 				<h2>Úvodní stránka</h2>
 				<div>
 					<Image
-						src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/settings/${mainPageImg}`}
+						src={
+							mainPageImageSrc
+								? mainPageImageSrc
+								: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/settings/${mainPageImg}`
+						}
 						alt="Obrazek nastaveni"
 						width={300}
 						height={200}
@@ -217,7 +266,7 @@ export default function ManageSettings({ settings }) {
 						type="file"
 						accept="image/*"
 						multiple={false}
-						onChange={(event) => changeImage(event, 3)}
+						onChange={(event) => onChangeUploadFile(event, 2)}
 					/>
 				</div>
 				<div>

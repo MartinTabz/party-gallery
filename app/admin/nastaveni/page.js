@@ -13,8 +13,8 @@ export default async function NastaveniPage() {
 	}
 	return (
 		<>
-			<h1>Nastavení</h1>
-         <ManageSettings settings={settings} />
+			<h1>Nastavení aplikace</h1>
+			<ManageSettings settings={settings} />
 		</>
 	);
 }
