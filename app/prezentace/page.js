@@ -37,12 +37,21 @@ export default async function Loading() {
 		throw new Error(error.message);
 	}
 
+	const { data: delay, error: settings_error } = await supabase
+		.from("settings")
+		.select("value")
+		.eq("name", "presentation_delay")
+		.single();
+
+	if (settings_error) {
+		throw new Error(error.message);
+	}
+
 	const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-callback?h=${process.env.HESLO}`;
 
 	return (
 		<main>
-			<h1>Vzkazy</h1>
-			<ShowCase posts={posts} />
+			<ShowCase delay={delay.value} posts={posts} />
 			<div>
 				<QRCode
 					size={320}
