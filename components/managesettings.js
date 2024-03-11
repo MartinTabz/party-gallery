@@ -84,6 +84,8 @@ export default function ManageSettings({ settings }) {
 					const fileExt = mainPageImageFile.name.split(".").pop();
 					const filePath = `${uuidv4()}.${fileExt}`;
 
+					await supabase.storage.from("settings").upload(filePath, mainPageImageFile);
+
 					const { error } = await supabase
 						.from("settings")
 						.update({ value: filePath })
@@ -98,7 +100,6 @@ export default function ManageSettings({ settings }) {
 						]);
 					}
 
-					await supabase.storage.from("settings").upload(filePath, mainPageImageFile);
 				}
 			}
 

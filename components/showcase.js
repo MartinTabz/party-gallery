@@ -90,7 +90,7 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 				(payload) => {
 					const postLength = posts.length;
 					setPosts((posts) => [payload.new, ...posts]);
-					if(postLength > 0) {
+					if (postLength > 0) {
 						setCurrentPost((prevPost) => (prevPost + 1) % posts.length);
 					}
 				}
@@ -103,8 +103,32 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 	}, [supabase]);
 
 	useEffect(() => {
+		const channelsThree = supabase
+			.channel("delete-message")
+			.on(
+				"postgres_changes",
+				{
+					event: "DELETE",
+					schema: "public",
+					table: "posts",
+				},
+				(payload) => {
+					console.log(payload);
+					const postToDelete = payload.old.id;
+					const updatedPosts = posts.filter((post) => post.id !== postToDelete);
+					setPosts(updatedPosts);
+				}
+			)
+			.subscribe();
+
+		return () => {
+			supabase.removeChannel(channelsThree);
+		};
+	}, [supabase]);
+
+	useEffect(() => {
 		const interval = setInterval(() => {
-			if(posts.length > 0) {
+			if (posts.length > 0) {
 				setCurrentPost((prevPost) => (prevPost + 1) % posts.length);
 			}
 		}, delay);
