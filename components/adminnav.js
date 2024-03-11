@@ -22,6 +22,7 @@ export default function AdminNavigation() {
 				<nav>
 					<Link href={"/admin"}>Správa</Link>
 					<Link href={"/admin/nastaveni"}>Nastavení</Link>
+					<Link href={"/admin/stul"}>Stůl</Link>
 				</nav>
 				<button onClick={logOut}>
 					<IoLogOut />
