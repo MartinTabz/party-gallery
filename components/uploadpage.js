@@ -32,31 +32,17 @@ export default function UploadComponent() {
 
 		setIsLoading(true);
 
-		let path;
+		const fileExt = imageFile.name.split(".").pop();
+		const filePath = `${uuidv4()}-${crypto
+			.randomBytes(16)
+			.toString("hex")}.${fileExt}`;
 
-		do {
-			const fileExt = imageFile.name.split(".").pop();
-			const filePath = `${uuidv4()}-${crypto
-				.randomBytes(16)
-				.toString("hex")}.${fileExt}`;
-
-			const { data: upload_data, error: upload_error } = await supabase.storage
-				.from("photos")
-				.upload(filePath, imageFile);
-
-			if (upload_error && !upload_error.error === "Duplicate") {
-				setUploadingError(upload_error.message);
-			}
-
-			if (upload_data.path) {
-				path = upload_data.path;
-			}
-		} while (!path);
+		supabase.storage.from("photos").upload(filePath, imageFile);
 
 		const { error } = await supabase.from("posts").insert({
 			name: name || null,
 			message: message || null,
-			image_name: path,
+			image_name: filePath,
 		});
 
 		if (error) {
@@ -148,7 +134,13 @@ export default function UploadComponent() {
 								<span>{message.length}/100</span>
 							</div>
 							{imageSrc && (
-								<Image className={style.inputed_img} width={400} height={200} src={imageSrc} alt="Obrázek" />
+								<Image
+									className={style.inputed_img}
+									width={400}
+									height={200}
+									src={imageSrc}
+									alt="Obrázek"
+								/>
 							)}
 							<div className={style.file_input}>
 								<GiClick />
