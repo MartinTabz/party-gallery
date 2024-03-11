@@ -4,6 +4,8 @@ import Image from "next/image";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import style from "@styles/download.module.css";
+import { FaCloudDownloadAlt } from "react-icons/fa";
 
 export default function MessageDownload({ msg }) {
 	const supabase = createClientComponentClient();
@@ -22,9 +24,9 @@ export default function MessageDownload({ msg }) {
 	}, [supabase]);
 
 	return (
-		<div key={msg.id}>
-			<div>
-				<div>
+		<div className={style.card} key={msg.id}>
+			<div className={style.content}>
+				<div className={style.image}>
 					<Image
 						src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${msg.image_name}`}
 						alt="Fotka u vzkazu"
@@ -32,12 +34,12 @@ export default function MessageDownload({ msg }) {
 						height={200}
 					/>
 				</div>
-				<div>
+				<div className={style.text}>
 					<h2>{msg.name}</h2>
 					<p>{msg.message}</p>
 				</div>
 			</div>
-			{donwloadLink && <Link href={donwloadLink}>Stahnout</Link>}
+			{donwloadLink && <Link href={donwloadLink}><FaCloudDownloadAlt /></Link>}
 		</div>
 	);
 }

@@ -1,0 +1,80 @@
+.section {
+   padding: 50px 0;
+   display: flex;
+   justify-content: center;
+}
+.area {
+   width: 95%;
+   text-align: center;
+   display: flex;
+   flex-direction: column;
+   gap: 30px;
+   max-width: 1200px;
+}
+.grid {
+   display: grid;
+   grid-template-columns: repeat(3, 1fr);
+   gap: 15px;
+}
+.card {
+   background-color: rgb(226, 226, 226);
+   border-radius: 15px;
+   padding: 15px;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+}
+.card a {
+   color: var(--clr-white);
+   background-color: var(--clr-main);
+   text-decoration: none;
+   transition: var(--ef-trans);
+   font-weight: 600;
+   border-radius: 10px;
+   height: 50px;
+   margin-top: 10px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   font-size: 1.3rem;
+   border: 2px solid var(--clr-main);
+}
+.card a:hover {
+   background-color: var(--clr-white);
+   color: var(--clr-main);
+}
+.content {
+   width: 100%;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
+}
+.text h2, .text p {
+   word-break: break-all;
+}
+.image {
+   background-color: white;
+   border-radius: 10px;
+   width: 100%;
+   height: 200px;
+   position: relative;
+}
+.image > img {
+   position: absolute;
+   border-radius: 10px;
+   width: 100%;
+   left: 0;
+   top: 0;
+   height: 100%;
+   object-fit: contain;
+}
+@media only screen and (max-width: 900px) {
+   .grid {
+      grid-template-columns: repeat(2, 1fr);
+   }
+}
+@media only screen and (max-width: 600px) {
+   .grid {
+      grid-template-columns: repeat(1, 1fr);
+   }
+}

@@ -3,6 +3,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import MessageDownload from "@components/messagedownload";
 import jwt from "jsonwebtoken";
 import Unauthorised from "@components/unauthorised";
+import style from "@styles/download.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -33,11 +34,14 @@ export default async function StahnoutVzkazyPage() {
 	}
 
 	return (
-		<main>
-			<div>
-				{messages.map((msg) => (
-					<MessageDownload msg={msg} />
-				))}
+		<main className={style.section}>
+			<div className={style.area}>
+				<h1>Stáhnout vzkazy</h1>
+				<div className={style.grid}>
+					{messages.map((msg) => (
+						<MessageDownload msg={msg} />
+					))}
+				</div>
 			</div>
 		</main>
 	);
