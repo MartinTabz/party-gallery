@@ -4,15 +4,18 @@ import { useEffect, useState } from "react";
 import { FiLoader } from "react-icons/fi";
 import Image from "next/image";
 import axios from "axios";
+import { IoMdCloseCircle } from "react-icons/io";
 import { IoCopy } from "react-icons/io5";
 import style from "@styles/adminmessages.module.css";
 import { MdDelete } from "react-icons/md";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { FaEye } from "react-icons/fa";
 
 export default function MessageManage({ posts: rawPosts, emailPassword }) {
 	const supabase = createClientComponentClient();
 	const [posts, setPosts] = useState(rawPosts);
+	const [reviewedPost, setReviewedPost] = useState("");
 
 	const [selectedPostId, setSelectedPostId] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
@@ -77,6 +80,16 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 
 	return (
 		<>
+			{reviewedPost && (
+				<section className={style.review_section}>
+					<button onClick={() => setReviewedPost("")}>
+						<IoMdCloseCircle />
+					</button>
+					<div className={style.review_area}>
+						<Image src={reviewedPost} height={1000} width={1000} />
+					</div>
+				</section>
+			)}
 			{popupMessage && (
 				<section className={style.popup_section}>
 					<div className={style.popup}>
@@ -147,6 +160,15 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 								<div className={style.post} key={post.id}>
 									<div className={style.post_text_area}>
 										<div className={style.post_img_area}>
+											<button
+												onClick={() =>
+													setReviewedPost(
+														`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${post.image_name}`
+													)
+												}
+											>
+												<FaEye />
+											</button>
 											<Image
 												src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${post.image_name}`}
 												alt="Fotka u vzkazu"
