@@ -6,28 +6,19 @@ import Unauthorised from "@components/unauthorised";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import style from "@styles/home.module.css";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
 	const supabase = createServerComponentClient({ cookies });
-	const cookieStore = cookies();
-	const heslo = cookieStore.get("pass");
+	
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
 
-	if (!heslo) {
-		return <Unauthorised />;
-	}
-
-	let decoded;
-
-	try {
-		decoded = await jwt.verify(heslo.value, process.env.JWT_HESLO);
-	} catch (error) {
-		throw new Error("Něco se pokazilo při dekodovaní hesla");
-	}
-
-	if (!decoded?.pass || decoded.pass != process.env.HESLO) {
-		return <Unauthorised />;
+	if (!user) {
+		redirect("/admin")
 	}
 
 	const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-callback?h=${process.env.HESLO}`;

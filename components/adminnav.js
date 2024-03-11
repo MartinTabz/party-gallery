@@ -20,6 +20,7 @@ export default function AdminNavigation() {
 			<div className={style.area}>
 				<h1>Administrace</h1>
 				<nav>
+					<Link href={"/"}>Domov</Link>
 					<Link href={"/admin"}>Správa</Link>
 					<Link href={"/admin/nastaveni"}>Nastavení</Link>
 					<Link href={"/admin/stul"}>Stůl</Link>
