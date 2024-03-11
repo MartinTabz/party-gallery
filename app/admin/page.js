@@ -17,12 +17,9 @@ export default async function AdminPage() {
 	}
 
 	return (
-		<>
-			<h1>Vítej v administraci</h1>
-			<MessageManage
-				emailPassword={process.env.VSECHNY_FOTKY_HESLO}
-				posts={posts}
-			/>
-		</>
+		<MessageManage
+			emailPassword={process.env.VSECHNY_FOTKY_HESLO}
+			posts={posts}
+		/>
 	);
 }

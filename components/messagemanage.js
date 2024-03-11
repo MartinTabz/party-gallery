@@ -1,8 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FiLoader } from "react-icons/fi";
 import Image from "next/image";
 import axios from "axios";
+import { IoCopy } from "react-icons/io5";
+import style from "@styles/adminmessages.module.css";
+import { MdDelete } from "react-icons/md";
+import { IoMdCloseCircleOutline } from "react-icons/io";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export default function MessageManage({ posts: rawPosts, emailPassword }) {
@@ -58,74 +63,149 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 		setIsLoading(false);
 	};
 
+	const copyTextToClipboard = (text) => {
+		navigator.clipboard
+			.writeText(text)
+			.then(() => {
+				setPopupMessage("Odkaz zkopírován");
+			})
+			.catch((error) => {
+				console.log(error);
+				setPopupMessage("Odkaz se podařilo zkopírovat");
+			});
+	};
+
 	return (
 		<>
 			{popupMessage && (
-				<div>
-					<span>{popupMessage}</span>
-					<button onClick={() => setPopupMessage("")}>X</button>
-				</div>
+				<section className={style.popup_section}>
+					<div className={style.popup}>
+						<span>{popupMessage}</span>
+						<button onClick={() => setPopupMessage("")}>
+							<IoMdCloseCircleOutline />
+						</button>
+					</div>
+				</section>
 			)}
 			{selectedPostId && (
-				<div>
-					<div>
-						{isLoading ? (
-							<span>Vzkaz se maže</span>
-						) : (
-							<>
-								<h2>Jste si jisti, že chcete odebrat tento vzkaz?</h2>
-								<div>
-									<button onClick={() => deletePost()}>Potvrdit</button>
-									<button onClick={() => setSelectedPostId("")}>Zrušit</button>
-								</div>
-							</>
-						)}
-					</div>
-				</div>
-			)}
-			<div>
-				<div>
-					<h3>Přístup na stránku ke stažení</h3>
-					<p>
-						Stránka, kde se stahují všechny fotky je zabezpečená. Tento odkaz
-						zkopírujte a pošlete emailem. Uživatele aplikace po prokliknutí
-						odkáže na stránku
-					</p>
-					<div>
-						<span>{`${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-allphotos?h=${emailPassword}`}</span>
-						<div>Zkopirovat</div>
-					</div>
-				</div>
-				{posts.map((post) => (
-					<div key={post.id}>
-						<div>
-							<div>
-								<Image
-									src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${post.image_name}`}
-									alt="Fotka u vzkazu"
-									width={200}
-									height={200}
-								/>
-							</div>
-							<div>
-								<span>ID: {post.id}</span>
-								<span>Vytvořeno {post.created_at}</span>
-								<h2>
-									<b>Jmeno:</b> {post.name}
-								</h2>
-								<p>
-									<b>Vzkaz:</b> {post.message}
-								</p>
-							</div>
-						</div>
-						<div>
-							<button onClick={() => setSelectedPostId(post.id)}>
-								Odstranit
+				<div className={style.delete_conf}>
+					<div className={style.delete_inner}>
+						<h2>
+							Jste si jisti, že chcete
+							<br />
+							odebrat tento vzkaz?
+						</h2>
+						<div className={style.delete_btns}>
+							<button disabled={isLoading} onClick={() => deletePost()}>
+								{isLoading ? (
+									<FiLoader
+										color="var(--clr-white)"
+										className={style.spinner}
+									/>
+								) : (
+									"Potvrdit"
+								)}
+							</button>
+							<button
+								disabled={isLoading}
+								onClick={() => setSelectedPostId("")}
+							>
+								Zrušit
 							</button>
 						</div>
 					</div>
-				))}
-			</div>
+				</div>
+			)}
+			<section className={style.section}>
+				<div className={style.area}>
+					<div className={style.email_link_area}>
+						<div className={style.email_link_text}>
+							<h3>Přístup na stránku ke stažení</h3>
+							<p>
+								Stránka, kde se stahují všechny fotky je zabezpečená. Tento
+								odkaz zkopírujte a pošlete emailem. Uživatele aplikace po
+								prokliknutí odkáže na stránku
+							</p>
+						</div>
+						<div className={style.email_link}>
+							<span>{`${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-allphotos?h=${emailPassword}`}</span>
+							<button
+								onClick={() =>
+									copyTextToClipboard(
+										`${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-allphotos?h=${emailPassword}`
+									)
+								}
+							>
+								<IoCopy />
+							</button>
+						</div>
+					</div>
+					<section className={style.posts_area}>
+						<h2>Správa vzkazů</h2>
+						<div className={style.posts}>
+							{posts.map((post) => (
+								<div className={style.post} key={post.id}>
+									<div className={style.post_text_area}>
+										<div className={style.post_img_area}>
+											<Image
+												src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${post.image_name}`}
+												alt="Fotka u vzkazu"
+												width={200}
+												height={200}
+											/>
+										</div>
+										<div className={style.details}>
+											<div className={style.details_top}>
+												<span>
+													<b>ID:</b> {post.id}
+												</span>
+												<span>
+													<b>Vytvořeno:</b> {formatDate(post.created_at)}
+												</span>
+											</div>
+											<div className={style.details_bottom}>
+												<h2>
+													<b>Jmeno:</b> {post.name}
+												</h2>
+												<p>
+													<b>Vzkaz:</b> {post.message}
+												</p>
+											</div>
+										</div>
+									</div>
+									<div className={style.post_delete}>
+										<button
+											disabled={selectedPostId ? true : false}
+											onClick={() => {
+												setSelectedPostId(post.id);
+												setPopupMessage("");
+											}}
+										>
+											<MdDelete />
+										</button>
+									</div>
+								</div>
+							))}
+						</div>
+					</section>
+				</div>
+			</section>
 		</>
 	);
+}
+
+function formatDate(timestampz) {
+	const date = new Date(timestampz);
+	const options = {
+		day: "numeric",
+		month: "short",
+		year: "numeric",
+		hour: "numeric",
+		minute: "numeric",
+		hour12: false,
+		timeZone: "Europe/Prague",
+	};
+	const formattedDate = date.toLocaleString("cs-CZ", options);
+
+	return formattedDate;
 }
