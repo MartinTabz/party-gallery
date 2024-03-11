@@ -13,10 +13,5 @@ export default async function NastaveniPage() {
 	if (error) {
 		throw new Error("Něco se pokazilo při načítání nastavení");
 	}
-	return (
-		<>
-			<h1>Nastavení aplikace</h1>
-			<ManageSettings settings={settings} />
-		</>
-	);
+	return <ManageSettings settings={settings} />;
 }
