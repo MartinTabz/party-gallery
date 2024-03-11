@@ -26,23 +26,12 @@ const variants = {
 	},
 };
 
-const swipeConfidenceThreshold = 10000;
-const swipePower = (offset, velocity) => {
-	return Math.abs(offset) * velocity;
-};
-
 export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 	const supabase = createClientComponentClient();
 
 	const [posts, setPosts] = useState(rawPosts);
 	const [delay, setDelay] = useState(5000);
 	const [currentPost, setCurrentPost] = useState(0);
-
-	const [[page, direction], setPage] = useState([0, 0]);
-
-	const paginate = (newDirection) => {
-		setPage([page + newDirection, newDirection]);
-	};
 
 	useEffect(() => {
 		const delayInt = parseInt(delayString, 10);
@@ -99,9 +88,11 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 					table: "posts",
 				},
 				(payload) => {
-					console.log("Change received!", payload.new);
+					const postLength = posts.length;
 					setPosts((posts) => [payload.new, ...posts]);
-					setCurrentPost(currentPost + 1);
+					if(postLength > 0) {
+						setCurrentPost((prevPost) => (prevPost + 1) % posts.length);
+					}
 				}
 			)
 			.subscribe();
@@ -113,7 +104,9 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 
 	useEffect(() => {
 		const interval = setInterval(() => {
-			setCurrentPost((prevPost) => (prevPost + 1) % posts.length);
+			if(posts.length > 0) {
+				setCurrentPost((prevPost) => (prevPost + 1) % posts.length);
+			}
 		}, delay);
 
 		return () => clearInterval(interval);
@@ -121,57 +114,58 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 
 	return (
 		<div className={style.slideshow}>
-			<div className={style.slideshow_inner}>
-				<div className={style.animatep}>
-					<AnimatePresence initial={{ opacity: 0 }} custom={direction}>
-						<motion.h1
-							key={currentPost}
-							custom={direction}
-							variants={variants}
-							initial="enter"
-							animate="center"
-							exit="exit"
-							transition={{
-								x: { type: "spring", stiffness: 300, damping: 30 },
-								opacity: { duration: 0.3 },
-							}}
-						>
-							{posts[currentPost].name && posts[currentPost].name}
-						</motion.h1>
-					</AnimatePresence>
-					<AnimatePresence initial={{ opacity: 0 }} custom={direction}>
-						<motion.img
-							key={currentPost}
-							src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${posts[currentPost].image_name}`}
-							custom={direction}
-							variants={variants}
-							initial="enter"
-							animate="center"
-							exit="exit"
-							transition={{
-								x: { type: "spring", stiffness: 300, damping: 30 },
-								opacity: { duration: 0.3 },
-							}}
-						/>
-					</AnimatePresence>
-					<AnimatePresence initial={{ opacity: 0 }} custom={direction}>
-						<motion.span
-							key={currentPost}
-							custom={direction}
-							variants={variants}
-							initial="enter"
-							animate="center"
-							exit="exit"
-							transition={{
-								x: { type: "spring", stiffness: 300, damping: 30 },
-								opacity: { duration: 0.3 },
-							}}
-						>
-							{posts[currentPost].message && posts[currentPost].message}
-						</motion.span>
-					</AnimatePresence>
+			{posts.length > 0 ? (
+				<div className={style.slideshow_inner}>
+					<div className={style.animatep}>
+						<AnimatePresence initial={{ opacity: 0 }}>
+							<motion.h1
+								key={currentPost}
+								variants={variants}
+								initial="enter"
+								animate="center"
+								exit="exit"
+								transition={{
+									x: { type: "spring", stiffness: 300, damping: 30 },
+									opacity: { duration: 0.3 },
+								}}
+							>
+								{posts[currentPost].name && posts[currentPost].name}
+							</motion.h1>
+						</AnimatePresence>
+						<AnimatePresence initial={{ opacity: 0 }}>
+							<motion.img
+								key={currentPost}
+								src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${posts[currentPost].image_name}`}
+								variants={variants}
+								initial="enter"
+								animate="center"
+								exit="exit"
+								transition={{
+									x: { type: "spring", stiffness: 300, damping: 30 },
+									opacity: { duration: 0.3 },
+								}}
+							/>
+						</AnimatePresence>
+						<AnimatePresence initial={{ opacity: 0 }}>
+							<motion.span
+								key={currentPost}
+								variants={variants}
+								initial="enter"
+								animate="center"
+								exit="exit"
+								transition={{
+									x: { type: "spring", stiffness: 300, damping: 30 },
+									opacity: { duration: 0.3 },
+								}}
+							>
+								{posts[currentPost].message && posts[currentPost].message}
+							</motion.span>
+						</AnimatePresence>
+					</div>
 				</div>
-			</div>
+			) : (
+				<h1>Zatím se zde nenachází žádné vzkazy</h1>
+			)}
 		</div>
 	);
 }

@@ -64,7 +64,7 @@ export default function ManageSettings({ settings }) {
 						]);
 					}
 
-					supabase.storage
+					await supabase.storage
 						.from("settings")
 						.upload(filePath, publicPageImageFile);
 				}
@@ -98,7 +98,7 @@ export default function ManageSettings({ settings }) {
 						]);
 					}
 
-					supabase.storage.from("settings").upload(filePath, mainPageImageFile);
+					await supabase.storage.from("settings").upload(filePath, mainPageImageFile);
 				}
 			}
 

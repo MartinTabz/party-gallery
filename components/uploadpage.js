@@ -37,7 +37,7 @@ export default function UploadComponent() {
 			.randomBytes(16)
 			.toString("hex")}.${fileExt}`;
 
-		supabase.storage.from("photos").upload(filePath, imageFile);
+		await supabase.storage.from("photos").upload(filePath, imageFile);
 
 		const { error } = await supabase.from("posts").insert({
 			name: name || null,
