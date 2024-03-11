@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import ShowCase from "@components/showcase";
 import QRCode from "react-qr-code";
 import Unauthorised from "@components/unauthorised";
+import style from "@styles/presentation.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -50,16 +51,15 @@ export default async function Loading() {
 	const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-callback?h=${process.env.HESLO}`;
 
 	return (
-		<main>
-			<ShowCase delay={delay.value} posts={posts} />
-			<div>
+		<main className={style.main}>
+			<div className={style.qr}>
 				<QRCode
-					size={320}
-					style={{ margin: "50px" }}
+					size={200}
 					value={uploadUrl}
-					viewBox={`0 0 320 320`}
+					viewBox={`0 0 200 200`}
 				/>
 			</div>
+			<ShowCase delay={delay.value} posts={posts} />
 		</main>
 	);
 }

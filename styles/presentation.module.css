@@ -1,0 +1,148 @@
+.slideshow {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 5;
+	background-color: transparent;
+	height: 100%;
+	min-height: 500px;
+}
+.slideshow_inner {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	position: relative;
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
+.slideshow_cancel {
+	position: absolute;
+	top: 10px;
+	color: var(--clr-white);
+	z-index: 6;
+	font-weight: 600;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+.fullscreen {
+	background-color: var(--clr-main);
+	color: var(--clr-white);
+	border: 0;
+	font-size: 0.95rem;
+	font-weight: 600;
+	padding: 10px 30px;
+	border-radius: calc(var(--border-radius) / 2.5);
+	cursor: pointer;
+	transition: var(--ef-trans);
+}
+.fullscreen:hover {
+	background-color: var(--clr-main-hover);
+}
+.animatep {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+.slideshow_inner img {
+	position: absolute;
+	width: 80%;
+	height: 80%;
+	object-fit: contain;
+}
+.animatep h1 {
+	top: 0px;
+	position: absolute;
+	font-size: 3rem;
+	height: 10%;
+	display: flex;
+	z-index: 999;
+	align-items: center;
+	justify-content: center;
+	word-break: break-all;
+	padding: 0 10%;
+}
+.animatep span {
+	bottom: 0px;
+	position: absolute;
+	font-size: 1.6rem;
+	word-break: break-all;
+	padding: 0 10%;
+	height: 10%;
+	display: flex;
+	z-index: 999;
+	align-items: flex-end;
+	justify-content: center;
+	padding-bottom: 10px;
+}
+.main {
+	position: relative;
+	width: 100%;
+	height: 100dvh;
+	overflow: hidden;
+}
+.qr {
+	position: absolute;
+	z-index: 999;
+	right: 10px;
+	padding: 10px;
+	border-radius: 10px;
+	top: calc(50% - 100px);
+	background-color: white;
+}
+@media only screen and (max-width: 1150px) {
+	.qr {
+		display: none;
+	}
+}
+@media only screen and (max-width: 700px) {
+	.animatep {
+		position: absolute;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		display: flex;
+	}
+	.slideshow_inner img {
+		position: absolute;
+		width: 95%;
+		height: 75%;
+		object-fit: contain;
+	}
+	.next,
+	.prev {
+		width: 40px;
+		height: 40px;
+		bottom: 10px;
+		top: unset;
+	}
+	.next {
+		right: calc(50% - 45px);
+	}
+	.prev {
+		left: calc(50% - 45px);
+	}
+}
+@media only screen and (max-width: 500px) {
+	.img {
+		height: 320px;
+		width: 250px;
+		position: relative;
+		pointer-events: none;
+	}
+}

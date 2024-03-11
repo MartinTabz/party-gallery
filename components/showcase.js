@@ -1,8 +1,35 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
+import style from "@styles/presentation.module.css";
+
+const variants = {
+	enter: (direction) => {
+		return {
+			x: direction > 0 ? 1000 : -1000,
+			opacity: 0,
+		};
+	},
+	center: {
+		zIndex: 1,
+		x: 0,
+		opacity: 1,
+	},
+	exit: (direction) => {
+		return {
+			zIndex: 0,
+			x: direction < 0 ? 1000 : -1000,
+			opacity: 0,
+		};
+	},
+};
+
+const swipeConfidenceThreshold = 10000;
+const swipePower = (offset, velocity) => {
+	return Math.abs(offset) * velocity;
+};
 
 export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 	const supabase = createClientComponentClient();
@@ -10,6 +37,12 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 	const [posts, setPosts] = useState(rawPosts);
 	const [delay, setDelay] = useState(5000);
 	const [currentPost, setCurrentPost] = useState(0);
+
+	const [[page, direction], setPage] = useState([0, 0]);
+
+	const paginate = (newDirection) => {
+		setPage([page + newDirection, newDirection]);
+	};
 
 	useEffect(() => {
 		const delayInt = parseInt(delayString, 10);
@@ -87,17 +120,58 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 	}, [delay, posts]);
 
 	return (
-		<section>
-			<div>
-				{posts[currentPost].name && <h2>{posts[currentPost].name}</h2>}
-				<Image
-					src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${posts[currentPost].image_name}`}
-					alt="Fotka u vzkazu"
-					width={300}
-					height={200}
-				/>
-				{posts[currentPost].message && <p>{posts[currentPost].message}</p>}
+		<div className={style.slideshow}>
+			<div className={style.slideshow_inner}>
+				<div className={style.animatep}>
+					<AnimatePresence initial={{ opacity: 0 }} custom={direction}>
+						<motion.h1
+							key={currentPost}
+							custom={direction}
+							variants={variants}
+							initial="enter"
+							animate="center"
+							exit="exit"
+							transition={{
+								x: { type: "spring", stiffness: 300, damping: 30 },
+								opacity: { duration: 0.3 },
+							}}
+						>
+							{posts[currentPost].name && posts[currentPost].name}
+						</motion.h1>
+					</AnimatePresence>
+					<AnimatePresence initial={{ opacity: 0 }} custom={direction}>
+						<motion.img
+							key={currentPost}
+							src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${posts[currentPost].image_name}`}
+							custom={direction}
+							variants={variants}
+							initial="enter"
+							animate="center"
+							exit="exit"
+							transition={{
+								x: { type: "spring", stiffness: 300, damping: 30 },
+								opacity: { duration: 0.3 },
+							}}
+						/>
+					</AnimatePresence>
+					<AnimatePresence initial={{ opacity: 0 }} custom={direction}>
+						<motion.span
+							key={currentPost}
+							custom={direction}
+							variants={variants}
+							initial="enter"
+							animate="center"
+							exit="exit"
+							transition={{
+								x: { type: "spring", stiffness: 300, damping: 30 },
+								opacity: { duration: 0.3 },
+							}}
+						>
+							{posts[currentPost].message && posts[currentPost].message}
+						</motion.span>
+					</AnimatePresence>
+				</div>
 			</div>
-		</section>
+		</div>
 	);
 }
