@@ -117,6 +117,7 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 					const postToDelete = payload.old.id;
 					const updatedPosts = posts.filter((post) => post.id !== postToDelete);
 					setPosts(updatedPosts);
+					setCurrentPost(0)
 				}
 			)
 			.subscribe();
