@@ -12,13 +12,13 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
 	const supabase = createServerComponentClient({ cookies });
-	
+
 	const {
 		data: { user },
 	} = await supabase.auth.getUser();
 
 	if (!user) {
-		redirect("/admin")
+		<Unauthorised />;
 	}
 
 	const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-callback?h=${process.env.HESLO}`;
