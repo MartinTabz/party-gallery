@@ -20,15 +20,14 @@ export default async function Unauthorised() {
 
 	return (
 		<main className={style.main_area}>
-			<div className={style.text_area}>
-				<h1>{publicPageText.value}</h1>
-			</div>
+			<h1>{publicPageText.value}</h1>
 			<div className={style.img_area}>
+				<div className={style.bg}></div>
 				<Image
 					src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/settings/${publicPageImg.value}`}
 					alt="Obrazek"
-					width={500}
-					height={350}
+					width={1900}
+					height={1080}
 				/>
 			</div>
 		</main>

@@ -23,9 +23,10 @@
    color: var(--clr-white);
 }
 .area > p {
-   font-size: 0.9rem;
-   color: rgb(216, 216, 216);
+   font-size: 0.95rem;
+   color: rgb(233, 233, 233);
    width: 95%;
+   font-weight: 500;
    max-width: 900px;
 }
 .area > a {
