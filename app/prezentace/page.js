@@ -15,7 +15,7 @@ export async function generateMetadata() {
 		data: { user },
 	} = await supabase.auth.getUser();
 
-	if(user) {
+	if (user) {
 		return {
 			title: "Prezentace vzkazů",
 		};
@@ -62,11 +62,20 @@ export default async function Loading() {
 		const { data: posts, error } = await supabase
 			.from("posts")
 			.select("*")
-			.order("created_at", { ascending: false });
+			.order("created_at", { ascending: true });
 
 		if (error) {
 			throw new Error(error.message);
 		}
+
+		const modifiedPosts = posts.map((post) => {
+			return {
+				...post,
+				image_name: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${post.image_name}`,
+			};
+		});
+
+		console.log(modifiedPosts)
 
 		const { data: delay, error: settings_error } = await supabase
 			.from("settings")
@@ -85,7 +94,7 @@ export default async function Loading() {
 				<div className={style.qr}>
 					<QRCode size={200} value={uploadUrl} viewBox={`0 0 200 200`} />
 				</div>
-				<ShowCase delay={delay.value} posts={posts} />
+				<ShowCase delay={delay.value} posts={modifiedPosts} />
 			</main>
 		);
 	}
@@ -109,11 +118,18 @@ export default async function Loading() {
 	const { data: posts, error } = await supabase
 		.from("posts")
 		.select("*")
-		.order("created_at", { ascending: false });
+		.order("created_at", { ascending: true });
 
 	if (error) {
 		throw new Error(error.message);
 	}
+
+	const modifiedPosts = posts.map((post) => {
+		return {
+			...post,
+			image_name: `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${post.image_name}`,
+		};
+	});
 
 	const { data: delay, error: settings_error } = await supabase
 		.from("settings")
@@ -132,7 +148,7 @@ export default async function Loading() {
 			<div className={style.qr}>
 				<QRCode size={200} value={uploadUrl} viewBox={`0 0 200 200`} />
 			</div>
-			<ShowCase delay={delay.value} posts={posts} />
+			<ShowCase delay={delay.value} posts={modifiedPosts} />
 		</main>
 	);
 }

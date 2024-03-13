@@ -50,6 +50,7 @@
 	position: absolute;
 	left: 0;
 	width: 100%;
+	top: 0;
 	height: 100%;
 	display: flex;
 	align-items: center;
@@ -58,29 +59,38 @@
 }
 .slideshow_inner img {
 	position: absolute;
-	width: 80%;
-	height: 80%;
+	width: 100%;
+	z-index: 1;
+	height: 100%;
 	object-fit: contain;
 }
 .animatep h1 {
-	top: 0px;
+	top: 5px;
+	z-index: 5;
+	font-weight: 700;
 	position: absolute;
 	font-size: 3rem;
-	height: 10%;
+	color: var(--clr-white);
 	display: flex;
 	z-index: 999;
 	align-items: center;
 	justify-content: center;
+
+	border-radius: 10px;
 	word-break: break-all;
-	padding: 0 10%;
+	padding: 10px 20px;
+	background-color: rgba(0, 0, 0, 0.613);
 }
 .animatep span {
-	bottom: 0px;
+	bottom: 5px;
 	position: absolute;
+	font-weight: 600;
+	color: var(--clr-white);
 	font-size: 1.6rem;
+	background-color: rgba(0, 0, 0, 0.613);
 	word-break: break-all;
-	padding: 0 10%;
-	height: 10%;
+	border-radius: 10px;
+	padding: 10px 20px;
 	display: flex;
 	z-index: 999;
 	align-items: flex-end;
@@ -145,4 +155,28 @@
 		position: relative;
 		pointer-events: none;
 	}
+}
+
+.innerdiv {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+}
+.innerdiv img {
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+.innerdiv h1 {
+	top: 5px;
+	left: 50%;
+	transform: translate(-50%);
+}
+.innerdiv span {
+	bottom: 5px;
+	left: 50%;
+	transform: translate(-50%);
+	z-index: 3;
 }

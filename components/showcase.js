@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AnimatePresence, motion } from "framer-motion";
 import style from "@styles/presentation.module.css";
+import Image from "next/image";
 
 const variants = {
 	enter: (direction) => {
@@ -87,12 +88,15 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 					schema: "public",
 					table: "posts",
 				},
-				(payload) => {
-					const postLength = posts.length;
-					setPosts((posts) => [payload.new, ...posts]);
-					if (postLength > 0) {
-						setCurrentPost((prevPost) => (prevPost + 1) % posts.length);
-					}
+				async (payload) => {
+					const { data } = await supabase.storage
+						.from("photos")
+						.download(payload.new.image_name);
+					const imgUrl = URL.createObjectURL(data);
+					console.log(imgUrl);
+					payload.new.image_name = imgUrl;
+					console.log(payload.new);
+					setPosts((posts) => [...posts, payload.new]);
 				}
 			)
 			.subscribe();
@@ -112,12 +116,28 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 					schema: "public",
 					table: "posts",
 				},
-				(payload) => {
-					console.log(payload);
-					const postToDelete = payload.old.id;
-					const updatedPosts = posts.filter((post) => post.id !== postToDelete);
-					setPosts(updatedPosts);
-					setCurrentPost(0)
+				async (payload) => {
+					try {
+						const deletedIndex = posts.findIndex(
+							(post) => post.id === payload.old.id
+						);
+
+						if (deletedIndex > -1) {
+							const updatedPosts = [
+								...posts.slice(0, deletedIndex),
+								...posts.slice(deletedIndex + 1),
+							];
+							setPosts(updatedPosts);
+
+							if (currentPost === deletedIndex) {
+								setCurrentPost((prevPost) =>
+									Math.min(prevPost + 1, updatedPosts.length - 1)
+								);
+							}
+						}
+					} catch (error) {
+						console.error("Error deleting post:", error);
+					}
 				}
 			)
 			.subscribe();
@@ -125,7 +145,7 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 		return () => {
 			supabase.removeChannel(channelsThree);
 		};
-	}, [supabase]);
+	}, [supabase, posts, currentPost]);
 
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -139,52 +159,38 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 
 	return (
 		<div className={style.slideshow}>
+			<button style={{ display: "none" }} onClick={() => console.log(posts)}>
+				Posts
+			</button>
 			{posts.length > 0 ? (
 				<div className={style.slideshow_inner}>
 					<div className={style.animatep}>
 						<AnimatePresence initial={{ opacity: 0 }}>
-							<motion.h1
-								key={currentPost}
+							<motion.div
 								variants={variants}
 								initial="enter"
 								animate="center"
 								exit="exit"
+								className={style.innerdiv}
 								transition={{
 									x: { type: "spring", stiffness: 300, damping: 30 },
 									opacity: { duration: 0.3 },
 								}}
 							>
-								{posts[currentPost].name && posts[currentPost].name}
-							</motion.h1>
-						</AnimatePresence>
-						<AnimatePresence initial={{ opacity: 0 }}>
-							<motion.img
-								key={currentPost}
-								src={`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/photos/${posts[currentPost].image_name}`}
-								variants={variants}
-								initial="enter"
-								animate="center"
-								exit="exit"
-								transition={{
-									x: { type: "spring", stiffness: 300, damping: 30 },
-									opacity: { duration: 0.3 },
-								}}
-							/>
-						</AnimatePresence>
-						<AnimatePresence initial={{ opacity: 0 }}>
-							<motion.span
-								key={currentPost}
-								variants={variants}
-								initial="enter"
-								animate="center"
-								exit="exit"
-								transition={{
-									x: { type: "spring", stiffness: 300, damping: 30 },
-									opacity: { duration: 0.3 },
-								}}
-							>
-								{posts[currentPost].message && posts[currentPost].message}
-							</motion.span>
+								<Image
+									loading="eager"
+									key={currentPost}
+									src={posts[currentPost].image_name}
+									width={800}
+									alt="Fotka"
+									height={800}
+									fetchPriority="high"
+								/>
+								{posts[currentPost].message && (
+									<span>{posts[currentPost].message}</span>
+								)}
+								{posts[currentPost].name && <h1>{posts[currentPost].name}</h1>}
+							</motion.div>
 						</AnimatePresence>
 					</div>
 				</div>
