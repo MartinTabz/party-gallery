@@ -57,7 +57,7 @@ export default async function Home() {
 				<h1>{mainPageText.value}</h1>
 
 				<div className={style.qr}>
-					<QRCode size={280} value={uploadUrl} viewBox={`0 0 280 280`} />
+					<QRCode size={250} value={uploadUrl} viewBox={`0 0 250 250`} />
 				</div>
 
 				<p>{mainPageDesc.value}</p>

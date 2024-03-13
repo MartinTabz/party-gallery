@@ -1,93 +1,95 @@
 .main_section {
-   width: 100%;
-   height: 100dvh;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   position: relative;
-   min-height: 710px;
+	width: 100%;
+	height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: relative;
+	min-height: 710px;
 }
 .area {
-   position: relative;
-   z-index: 2;
-   color: var(--clr-white);
-   text-align: center;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-direction: column;
-   gap: 30px;
+	position: relative;
+	z-index: 2;
+	color: var(--clr-white);
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	gap: 30px;
 }
 .area > h1 {
-   font-size: 3rem;
-   color: var(--clr-white);
+	font-size: 2rem;
+	color: var(--clr-white);
+	width: var(--width);
+	max-width: 1200px;
 }
 .area > p {
-   font-size: 0.95rem;
-   color: rgb(233, 233, 233);
-   width: 95%;
-   font-weight: 500;
-   max-width: 900px;
+	font-size: 1.1rem;
+	color: rgb(239, 239, 239);
+	width: 95%;
+	font-weight: 500;
+	max-width: 900px;
 }
 .area > a {
-   background-color: var(--clr-main);
-   color: var(--clr-white);
-   font-weight: 700;
-   transition: var(--ef-trans);
-   text-decoration: none;
-   text-transform: uppercase;
-   border: 3px solid var(--clr-main);
-   cursor: pointer;
-   padding: 12px 40px;
-   font-size: 1.3rem;
-   border-radius: 10px;
-   letter-spacing: 1px;
+	background-color: var(--clr-main);
+	color: var(--clr-white);
+	font-weight: 700;
+	transition: var(--ef-trans);
+	text-decoration: none;
+	text-transform: uppercase;
+	border: 3px solid var(--clr-main);
+	cursor: pointer;
+	padding: 12px 40px;
+	font-size: 1.3rem;
+	border-radius: 10px;
+	letter-spacing: 1px;
 }
 .area > a:hover {
-   background-color: var(--clr-white);
-   color: var(--clr-main);
+	background-color: var(--clr-white);
+	color: var(--clr-main);
 }
 .background {
-   position: absolute;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   top: 0;
-   width: 100%;
-   z-index: 1;
-   height: 100%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	width: 100%;
+	z-index: 1;
+	height: 100%;
 }
 .qr {
-   background-color: white;
-   padding: 10px;
-   border-radius: 15px;
+	background-color: white;
+	padding: 10px;
+	border-radius: 15px;
 }
 .background > div {
-   background-color: rgba(0, 0, 0, 0.377);
-   width: 100%;
-   position: absolute;
-   height: 100%;
-   z-index: 3;
+	background-color: rgba(0, 0, 0, 0.6);
+	width: 100%;
+	position: absolute;
+	height: 100%;
+	z-index: 3;
 }
 .background > img {
-   width: 100%;
-   object-fit: cover;
-   z-index: 2;
-   position: absolute;
-   height: 100%;
+	width: 100%;
+	object-fit: cover;
+	z-index: 2;
+	position: absolute;
+	height: 100%;
 }
 
 @media only screen and (max-width: 500px) {
-   .area > h1 {
-      font-size: 2.5rem;
-   }
-   .area > p {
-      font-size: 0.8rem;
-      line-height: 1rem;
-   }
-   .area > a {
-      font-weight: 600;
-      padding: 8px 30px;
-      font-size: 1.1rem;
-   }
+	.area > h1 {
+		font-size: 1.6rem;
+	}
+	.area > p {
+		font-size: 1rem;
+		line-height: 1rem;
+	}
+	.area > a {
+		font-weight: 600;
+		padding: 8px 30px;
+		font-size: 1.1rem;
+	}
 }
