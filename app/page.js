@@ -18,7 +18,9 @@ export default async function Home() {
 	} = await supabase.auth.getUser();
 
 	if (!user) {
-		<Unauthorised />;
+		return (
+			<Unauthorised />
+		);
 	}
 
 	const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-callback?h=${process.env.HESLO}`;
