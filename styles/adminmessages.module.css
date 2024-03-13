@@ -443,6 +443,12 @@
 	justify-content: space-between;
 	padding: 0 10%;
 }
+.stats span {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
 @media only screen and (max-width: 600px) {
 	.stats {
 		display: flex;
@@ -450,5 +456,6 @@
 		justify-content: center;
 		height: auto;
 		padding: 15px 5px;
+		gap: 8px;
 	}
 }

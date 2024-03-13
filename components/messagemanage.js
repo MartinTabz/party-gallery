@@ -157,11 +157,23 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 						<h2>Správa vzkazů</h2>
 						<div className={style.stats}>
 							<span>
-								Počet vzkazů: <b>{posts.length}</b>
+								Počet: <b>{posts.length} vzkazy</b>
 							</span>
 							<span>
-								Místo využito:{" "}
-								<b>{Number((sumContentLength(posts) / 1000000).toFixed(2))}/1024 MB</b>
+								Využito:{" "}
+								<b>
+									{Number((sumContentLength(posts) / 1000000).toFixed(2))}/1024
+									MB
+								</b>
+							</span>
+							<span>
+								Odhadované maximum
+								<b>
+									{Math.floor(
+										1000000000 / (sumContentLength(posts) / posts.length)
+									)}{" "}
+									obrázků
+								</b>
 							</span>
 						</div>
 						<div className={style.posts}>
