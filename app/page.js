@@ -1,12 +1,28 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import jwt from "jsonwebtoken";
 import QRCode from "react-qr-code";
 import Unauthorised from "@components/unauthorised";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import style from "@styles/home.module.css";
-import { redirect } from "next/navigation";
+
+export async function generateMetadata() {
+	const supabase = createServerComponentClient({ cookies });
+
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	if (!user) {
+		return {
+			title: "Tady nic není!",
+		};
+	}
+
+	return {
+		title: "Vítejte na hlavní stránce",
+	};
+}
 
 export const dynamic = "force-dynamic";
 
@@ -18,9 +34,7 @@ export default async function Home() {
 	} = await supabase.auth.getUser();
 
 	if (!user) {
-		return (
-			<Unauthorised />
-		);
+		return <Unauthorised />;
 	}
 
 	const uploadUrl = `${process.env.NEXT_PUBLIC_DOMAIN}/api/self-auth-callback?h=${process.env.HESLO}`;

@@ -155,6 +155,15 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 					</div>
 					<section className={style.posts_area}>
 						<h2>Správa vzkazů</h2>
+						<div className={style.stats}>
+							<span>
+								Počet vzkazů: <b>{posts.length}</b>
+							</span>
+							<span>
+								Místo využito:{" "}
+								<b>{Number((sumContentLength(posts) / 1000000).toFixed(2))}/1024 MB</b>
+							</span>
+						</div>
 						<div className={style.posts}>
 							{posts.map((post) => (
 								<div className={style.post} key={post.id}>
@@ -184,10 +193,14 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 												<span>
 													<b>Vytvořeno:</b> {formatDate(post.created_at)}
 												</span>
+												<span>
+													<b>Velikost:</b>{" "}
+													{Number((post.contentLength / 1000000).toFixed(2))} MB
+												</span>
 											</div>
 											<div className={style.details_bottom}>
 												<h2>
-													<b>Jmeno:</b> {post.name}
+													<b>Jméno:</b> {post.name}
 												</h2>
 												<p>
 													<b>Vzkaz:</b> {post.message}
@@ -230,4 +243,14 @@ function formatDate(timestampz) {
 	const formattedDate = date.toLocaleString("cs-CZ", options);
 
 	return formattedDate;
+}
+
+function sumContentLength(posts) {
+	let sum = 0;
+	for (const post of posts) {
+		if (post.contentLength) {
+			sum += post.contentLength;
+		}
+	}
+	return sum;
 }

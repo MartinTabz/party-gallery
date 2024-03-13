@@ -4,6 +4,24 @@ import ManageSettings from "@components/managesettings";
 
 export const dynamic = "force-dynamic";
 
+export async function generateMetadata() {
+	const supabase = createServerComponentClient({ cookies });
+
+	const {
+		data: { user },
+	} = await supabase.auth.getUser();
+
+	if (!user) {
+		return {
+			title: "Nejste oprávnění k přístupu!",
+		};
+	}
+
+	return {
+		title: "Nastavení aplikace - Administrace",
+	};
+}
+
 export default async function NastaveniPage() {
 	const supabase = createServerComponentClient({ cookies });
 	const { data: settings, error } = await supabase

@@ -60,323 +60,323 @@
 }
 /* Post card styles */
 .posts_area {
-   display: flex;
-   padding: 30px 0;
-   flex-direction: column;
-   gap: 20px;
-   position: relative;
-   width: 100%;
+	display: flex;
+	padding: 30px 0;
+	flex-direction: column;
+	gap: 20px;
+	position: relative;
+	width: 100%;
 }
 .posts {
-   display: flex;
-   flex-direction: column;
-   gap: 10px;
-   position: relative;
-   width: 100%;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	position: relative;
+	width: 100%;
 }
 .post {
-   display: flex;
-   position: relative;
-   justify-content: space-between;
-   align-items: center;
-   position: relative;
-   width: 100%;
-   height: 250px;
-   gap: 10px;
-   background-color: rgb(221, 221, 221);
-   padding: 15px;
-   border-radius: 15px;
+	display: flex;
+	position: relative;
+	justify-content: space-between;
+	align-items: center;
+	position: relative;
+	width: 100%;
+	height: 250px;
+	gap: 10px;
+	background-color: rgb(221, 221, 221);
+	padding: 15px;
+	border-radius: 15px;
 }
 .post_delete {
-   height: 100%;
-   width: calc(15% - 10px);
-   position: relative;
-   right: 0;
+	height: 100%;
+	width: calc(15% - 10px);
+	position: relative;
+	right: 0;
 }
 .post_delete > button:disabled {
-   background-color: #d0d0d0;
-   cursor: default;
+	background-color: #d0d0d0;
+	cursor: default;
 }
 .post_delete > button:hover:disabled {
-   color: var(--clr-main);
-   background-color: #d0d0d0;
-   cursor: default;
+	color: var(--clr-main);
+	background-color: #d0d0d0;
+	cursor: default;
 }
 .post_delete > button {
-   width: 100%;
-   position: absolute;
-   transition: var(--ef-trans);
-   height: 100%;
-   left: 0;
-   top: 0;
-   bottom: 0;
-   cursor: pointer;
-   right: 0;
-   border-radius: 10px;
-   font-size: 2rem;
-   color: var(--clr-main);
-   background-color: #f0f0f0;
-   border: 0;
+	width: 100%;
+	position: absolute;
+	transition: var(--ef-trans);
+	height: 100%;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	cursor: pointer;
+	right: 0;
+	border-radius: 10px;
+	font-size: 2rem;
+	color: var(--clr-main);
+	background-color: #f0f0f0;
+	border: 0;
 }
 .post_delete > button:hover {
-   background-color: var(--clr-main);
-   color: var(--clr-white);
+	background-color: var(--clr-main);
+	color: var(--clr-white);
 }
 .post_text_area {
-   display: flex;
-   position: relative;
-   height: 100%;
-   gap: 10px;
-   width: 85%;
+	display: flex;
+	position: relative;
+	height: 100%;
+	gap: 10px;
+	width: 85%;
 }
 .post_img_area {
-   width: 30%;
-   height: 100%;
-   position: relative;
-   border-radius: 10px;
-   background-color: #f0f0f0;
+	width: 30%;
+	height: 100%;
+	position: relative;
+	border-radius: 10px;
+	background-color: #f0f0f0;
 }
 .post_img_area > button {
-   position: absolute;
-   color: var(--clr-white);
-   cursor: pointer;
-   width: 100%;
-   height: 100%;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   font-size: 2rem;
-   border-radius: 10px;
-   border: none;
-   background-color: rgba(0, 0, 0, 0.206);
-   z-index: 2;
+	position: absolute;
+	color: var(--clr-white);
+	cursor: pointer;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+	border-radius: 10px;
+	border: none;
+	background-color: rgba(0, 0, 0, 0.206);
+	z-index: 2;
 }
 .post_img_area > img {
-   position: absolute;
-   z-index: 1;
-   border-radius: 10px;
-   width: 100%;
-   height: 100%;
-   left: 0;
-   right: 0;
-   object-fit: cover;
-   top: 0;
-   bottom: 0;
+	position: absolute;
+	z-index: 1;
+	border-radius: 10px;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	right: 0;
+	object-fit: cover;
+	top: 0;
+	bottom: 0;
 }
 .details {
-   display: flex;
-   width: 70%;
-   flex-direction: column;
-   gap: 10px;
-   position: relative;
+	display: flex;
+	width: 70%;
+	flex-direction: column;
+	gap: 10px;
+	position: relative;
 }
 .details_top {
-   color: gray;
-   display: flex;
-   flex-direction: column;
-   font-size: 0.8rem;
+	color: gray;
+	display: flex;
+	flex-direction: column;
+	font-size: 0.8rem;
 }
 .details_bottom h2 {
-   font-weight: normal;
+	font-weight: normal;
 }
 .details_bottom p {
-   word-break: break-all;
-   width: 100%;
+	word-break: break-all;
+	width: 100%;
 }
 .review_section {
-   background-color: rgba(0, 0, 0, 0.414);
-   z-index: 800;
-   position: fixed;
-   left: 0;
-   top: 0;
-   width: 100%;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   height: 100%;
+	background-color: rgba(0, 0, 0, 0.414);
+	z-index: 800;
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
 }
 .review_section > button {
-   position: absolute;
-   right: 20px;
-   top: 20px;
-   background-color: transparent;
-   border: none;
-   cursor: pointer;
-   font-size: 2rem;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   color: var(--clr-white);
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	font-size: 2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--clr-white);
 }
 .review_area {
-   width: 90%;
-   height: 90%;
-   position: relative;
+	width: 90%;
+	height: 90%;
+	position: relative;
 }
 .review_area > img {
-   position: absolute;
-   width: 100%;
-   height: 100%;
-   object-fit: contain;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
 }
 @media only screen and (max-width: 650px) {
-   .email_link_text > h3 {
-      font-size: 1.2rem;
-   }
-   .email_link_text > p {
-      font-size: 0.9rem;
-   }
-   .email_link > span {
-      font-size: 0.9rem;
-   }
-   .post_delete > button {
-      font-size: 1.6rem;
-   }
-   .details_top {
-      font-size: 0.7rem;
-   }
-   .details_bottom h2 {
-      font-size: 1.1rem;
-   }
-   .details_bottom p {
-      font-size: 0.8rem;
-   }
-   .post {
-      padding: 10px;
-   }
+	.email_link_text > h3 {
+		font-size: 1.2rem;
+	}
+	.email_link_text > p {
+		font-size: 0.9rem;
+	}
+	.email_link > span {
+		font-size: 0.9rem;
+	}
+	.post_delete > button {
+		font-size: 1.6rem;
+	}
+	.details_top {
+		font-size: 0.7rem;
+	}
+	.details_bottom h2 {
+		font-size: 1.1rem;
+	}
+	.details_bottom p {
+		font-size: 0.8rem;
+	}
+	.post {
+		padding: 10px;
+	}
 }
 @media only screen and (max-width: 460px) {
-   .email_link_text > h3 {
-      font-size: 1.1rem;
-   }
-   .email_link_text > p {
-      font-size: 0.8rem;
-   }
-   .email_link > span {
-      font-size: 0.8rem;
-   }
-   .post_delete > button {
-      font-size: 1.6rem;
-   }
-   .details_top {
-      font-size: 0.5rem;
-   }
-   .details_bottom h2 {
-      font-size: 0.8rem;
-   }
-   .details_bottom p {
-      font-size: 0.7rem;
-   }
-   .post {
-      padding: 5px;
-      height: 200px;
-   }
+	.email_link_text > h3 {
+		font-size: 1.1rem;
+	}
+	.email_link_text > p {
+		font-size: 0.8rem;
+	}
+	.email_link > span {
+		font-size: 0.8rem;
+	}
+	.post_delete > button {
+		font-size: 1.6rem;
+	}
+	.details_top {
+		font-size: 0.5rem;
+	}
+	.details_bottom h2 {
+		font-size: 0.8rem;
+	}
+	.details_bottom p {
+		font-size: 0.7rem;
+	}
+	.post {
+		padding: 5px;
+		height: 200px;
+	}
 }
 /* Info popup styles */
 .popup_section {
-   position: fixed;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   pointer-events: none;
-   z-index: 700;
-   background-color: transparent;
-   width: 100%;
-   height: 100dvh;
-   display: flex;
-   min-height: 600px;
-   align-items: flex-start;
-   justify-content: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+	z-index: 700;
+	background-color: transparent;
+	width: 100%;
+	height: 100dvh;
+	display: flex;
+	min-height: 600px;
+	align-items: flex-start;
+	justify-content: center;
 }
 .popup {
-   background-color: var(--clr-white);
-   position: relative;
-   top: 10px;
-   max-width: var(--max-width);
-   width: var(--width);
-   padding: 25px;
-   border-radius: 15px;
-   border: 2px solid var(--clr-main);
-   display: flex;
-   align-items: center;
-   pointer-events: all;
-   justify-content: space-between;
+	background-color: var(--clr-white);
+	position: relative;
+	top: 10px;
+	max-width: var(--max-width);
+	width: var(--width);
+	padding: 25px;
+	border-radius: 15px;
+	border: 2px solid var(--clr-main);
+	display: flex;
+	align-items: center;
+	pointer-events: all;
+	justify-content: space-between;
 }
 .popup > button {
-   border: none;
-   background-color: transparent;
-   color: var(--clr-main);
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   font-size: 2rem;
-   cursor: pointer;
+	border: none;
+	background-color: transparent;
+	color: var(--clr-main);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 2rem;
+	cursor: pointer;
 }
 @media only screen and (max-width: 460px) {
-   .popup > span {
-      font-size: 0.9rem;
-   }
+	.popup > span {
+		font-size: 0.9rem;
+	}
 }
 /* Deletion confirmation */
 .delete_conf {
-   position: fixed;
-   top: 0;
-   left: 0;
-   right: 0;
-   bottom: 0;
-   pointer-events: none;
-   z-index: 700;
-   background-color: rgba(0, 0, 0, 0.38);
-   width: 100%;
-   height: 100dvh;
-   min-height: 600px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+	z-index: 700;
+	background-color: rgba(0, 0, 0, 0.38);
+	width: 100%;
+	height: 100dvh;
+	min-height: 600px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .delete_inner {
-   background-color: var(--clr-white);
-   position: relative;
-   top: 10px;
-   max-width: 400px;
-   width: var(--width);
-   padding: 50px 0;
-   border-radius: 15px;
-   display: flex;
-   text-align: center;
-   gap: 20px;
-   align-items: center;
-   flex-direction: column;
-   pointer-events: all;
-   justify-content: space-between;
+	background-color: var(--clr-white);
+	position: relative;
+	top: 10px;
+	max-width: 400px;
+	width: var(--width);
+	padding: 50px 0;
+	border-radius: 15px;
+	display: flex;
+	text-align: center;
+	gap: 20px;
+	align-items: center;
+	flex-direction: column;
+	pointer-events: all;
+	justify-content: space-between;
 }
 .delete_btns {
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   gap: 10px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
 }
 .delete_btns button {
-   text-transform: uppercase;
-   font-weight: 700;
-   letter-spacing: 1px;
-   font-size: 1.1rem;
-   padding: 5px 10px;
-   height: 40px;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   width: 120px;
-   border: 2px solid;
-   border-radius: 8px;
-   transition: var(--ef-trans);
-   cursor: pointer;
+	text-transform: uppercase;
+	font-weight: 700;
+	letter-spacing: 1px;
+	font-size: 1.1rem;
+	padding: 5px 10px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 120px;
+	border: 2px solid;
+	border-radius: 8px;
+	transition: var(--ef-trans);
+	cursor: pointer;
 }
 .delete_btns > button:first-child {
-   background-color: red;
-   border: 2px solid red;
-   color: var(--clr-white);
+	background-color: red;
+	border: 2px solid red;
+	color: var(--clr-white);
 }
 .spinner {
 	border-radius: 50%;
@@ -393,44 +393,62 @@
 	}
 }
 .delete_btns > button:first-child {
-   background-color: red;
-   border: 2px solid red;
-   color: var(--clr-white);
+	background-color: red;
+	border: 2px solid red;
+	color: var(--clr-white);
 }
 .delete_btns > button:first-child:hover {
-   background-color: var(--clr-white);
-   color: red;
+	background-color: var(--clr-white);
+	color: red;
 }
 .delete_btns > button:last-child {
-   background-color: var(--clr-white);
-   color: var(--clr-main);
-   border: 2px solid var(--clr-main);
+	background-color: var(--clr-white);
+	color: var(--clr-main);
+	border: 2px solid var(--clr-main);
 }
 .delete_btns > button:last-child:hover {
-   background-color: var(--clr-main);
-   color: var(--clr-white);
+	background-color: var(--clr-main);
+	color: var(--clr-white);
 }
 .delete_btns > button:last-child:disabled {
-   background-color: var(--clr-white);
-   color: var(--clr-main);
-   border: 2px solid var(--clr-main);
-   cursor: default;
+	background-color: var(--clr-white);
+	color: var(--clr-main);
+	border: 2px solid var(--clr-main);
+	cursor: default;
 }
 .delete_btns > button:last-child:hover:disabled {
-   background-color: var(--clr-white);
-   color: var(--clr-main);
-   border: 2px solid var(--clr-main);
-   cursor: default;
+	background-color: var(--clr-white);
+	color: var(--clr-main);
+	border: 2px solid var(--clr-main);
+	cursor: default;
 }
 .delete_btns > button:first-child:disabled {
-   background-color: red;
-   cursor: default;
-   color: var(--clr-white);
-   border: 2px solid red;
+	background-color: red;
+	cursor: default;
+	color: var(--clr-white);
+	border: 2px solid red;
 }
 .delete_btns > button:first-child:hover:disabled {
-   background-color: red;
-   color: var(--clr-white);
-   cursor: default;
-   border: 2px solid red;
+	background-color: red;
+	color: var(--clr-white);
+	cursor: default;
+	border: 2px solid red;
+}
+.stats {
+	background-color: rgb(221, 221, 221);
+	height: 50px;
+	border-radius: 15px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 10%;
+}
+@media only screen and (max-width: 600px) {
+	.stats {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		height: auto;
+		padding: 15px 5px;
+	}
 }

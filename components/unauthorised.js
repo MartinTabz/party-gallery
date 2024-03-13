@@ -2,6 +2,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import style from "@styles/unauthorised.module.css";
+import { getServiceSupabase } from "@utils/supabase";
 
 export default async function Unauthorised() {
 	const supabase = createServerComponentClient({ cookies });
