@@ -5,7 +5,6 @@ import { v4 as uuidv4 } from "uuid";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import crypto from "crypto";
-import Compressor from "compressorjs";
 import style from "@styles/message.module.css";
 import { FiLoader } from "react-icons/fi";
 import { GiClick } from "react-icons/gi";
@@ -61,17 +60,12 @@ export default function UploadComponent() {
 
 			const file = event.target.files[0];
 
-			if (file.size > 5000000) {
+			if (file.size > 6000000) {
 				setUploadingError("Obrázek je příliš velký");
 				return;
 			}
 
-			new Compressor(file, {
-				quality: 0.6,
-				success: (res) => {
-					setImageFile(res);
-				},
-			});
+			setImageFile(file);
 
 			setImageSrc(URL.createObjectURL(file));
 		} catch (error) {

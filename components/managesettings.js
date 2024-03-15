@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Compressor from "compressorjs";
 import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
+import crypto from "crypto";
 import { FiLoader } from "react-icons/fi";
 import { HiCursorClick } from "react-icons/hi";
 import style from "@styles/adminsettings.module.css";
@@ -48,7 +48,9 @@ export default function ManageSettings({ settings }) {
 					]);
 				} else {
 					const fileExt = publicPageImageFile.name.split(".").pop();
-					const filePath = `${uuidv4()}.${fileExt}`;
+					const filePath = `${uuidv4()}-${crypto
+						.randomBytes(16)
+						.toString("hex")}.${fileExt}`;
 
 					const { error } = await supabase
 						.from("settings")
@@ -84,7 +86,9 @@ export default function ManageSettings({ settings }) {
 					const fileExt = mainPageImageFile.name.split(".").pop();
 					const filePath = `${uuidv4()}.${fileExt}`;
 
-					await supabase.storage.from("settings").upload(filePath, mainPageImageFile);
+					await supabase.storage
+						.from("settings")
+						.upload(filePath, mainPageImageFile);
 
 					const { error } = await supabase
 						.from("settings")
@@ -99,7 +103,6 @@ export default function ManageSettings({ settings }) {
 							"Něco se pokazilo při zapisování nového obrázku do tabulky",
 						]);
 					}
-
 				}
 			}
 
@@ -188,16 +191,11 @@ export default function ManageSettings({ settings }) {
 				return;
 			}
 
-			new Compressor(file, {
-				quality: 0.6,
-				success: (res) => {
-					if (tag == 1) {
-						setPublicPageImageFile(res);
-					} else {
-						setMainPageImageFile(res);
-					}
-				},
-			});
+			if (tag == 1) {
+				setPublicPageImageFile(file);
+			} else {
+				setMainPageImageFile(file);
+			}
 
 			if (tag == 1) {
 				setPublicPageImageSrc(URL.createObjectURL(file));
