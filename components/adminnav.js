@@ -21,6 +21,7 @@ export default function AdminNavigation() {
 				<h1>Administrace</h1>
 				<nav>
 					<Link href={"/"}>Domov</Link>
+					<Link href={"/sranda"}>Sranda</Link>
 					<Link href={"/admin"}>Správa</Link>
 					<Link href={"/admin/nastaveni"}>Nastavení</Link>
 					<Link href={"/admin/stul"}>Stůl</Link>

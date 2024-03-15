@@ -48,7 +48,7 @@
 .area > button:hover {
 	color: var(--clr-main);
 }
-@media only screen and (max-width: 500px) {
+@media only screen and (max-width: 650px) {
 	.area > h1 {
 		display: none;
 	}
@@ -56,6 +56,11 @@
 		gap: 0;
 	}
 	.area > nav > a {
-		font-size: 0.9rem;
+		font-size: 0.85rem;
+		padding: 0;
+		padding: 0 5px;
+	}
+	.area > button {
+		font-size: 1.6rem;
 	}
 }
