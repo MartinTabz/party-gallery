@@ -49,8 +49,6 @@ export default async function AdminPage() {
 		return dataItem;
 	});
 
-	console.log(updatedPosts)
-
 	return (
 		<MessageManage
 			emailPassword={process.env.VSECHNY_FOTKY_HESLO}

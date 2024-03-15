@@ -32,7 +32,6 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 					table: "posts",
 				},
 				(payload) => {
-					console.log("Change received!", payload.new);
 					setPosts((posts) => [payload.new, ...posts]);
 				}
 			)
@@ -73,7 +72,6 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 				setPopupMessage("Odkaz zkopírován");
 			})
 			.catch((error) => {
-				console.log(error);
 				setPopupMessage("Odkaz se podařilo zkopírovat");
 			});
 	};
@@ -157,20 +155,30 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 						<h2>Správa vzkazů</h2>
 						<div className={style.stats}>
 							<span>
-								Počet: <b>{posts.length} vzkazy</b>
+								Počet:{" "}
+								<b>
+									{posts.length}{" "}
+									{posts.length == 0
+										? "vzkazů"
+										: posts.length == 1
+										? "vzkaz"
+										: posts.length >= 2 && posts.length <= 4
+										? "vzkazy"
+										: "vzkazů"}
+								</b>
 							</span>
 							<span>
-								Využito:{" "}
+								Využito:
 								<b>
-									{Number((sumContentLength(posts) / 1000000).toFixed(2))}/1024
-									MB
+									{Number((sumContentLength(posts) / 1000000).toFixed(2))}
+									/102400 MB
 								</b>
 							</span>
 							<span>
 								Odhadované maximum
 								<b>
 									{Math.floor(
-										1000000000 / (sumContentLength(posts) / posts.length)
+										100000000000 / (sumContentLength(posts) / posts.length)
 									)}{" "}
 									obrázků
 								</b>
