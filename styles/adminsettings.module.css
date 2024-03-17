@@ -338,7 +338,6 @@
 	width: 30px;
 	cursor: pointer;
 	position: relative;
-	background-color: rgb(12, 12, 12);
 	color: var(--clr-white);
 	border: 1px solid gray;
 	border-radius: 5px;
@@ -348,13 +347,16 @@
 	height: 30px;
 	font-size: 1.1rem;
 }
+.editor_menu > button:not(.active_btn) {
+	background-color: transparent;
+}
 .colour_block {
 	width: 23px;
 	height: 23px;
 	border-radius: 5px;
 }
-.is_active {
-	background-color: rgb(199, 199, 199);
+.editor_menu .active_btn {
+	background-color: rgb(97, 97, 97);
 }
 .editor {
 	position: relative;
