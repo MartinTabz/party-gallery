@@ -219,12 +219,7 @@ export default function MessageManage({ posts: rawPosts, emailPassword }) {
 												</span>
 											</div>
 											<div className={style.details_bottom}>
-												<h2>
-													<b>Jméno:</b> {post.name}
-												</h2>
-												<p>
-													<b>Vzkaz:</b> {post.message}
-												</p>
+												<h2>{post.name}</h2>
 											</div>
 										</div>
 									</div>

@@ -17,7 +17,6 @@ export default function UploadComponent() {
 	const [success, setSuccess] = useState(false);
 
 	const [name, setName] = useState("");
-	const [message, setMessage] = useState("");
 	const [imageFile, setImageFile] = useState();
 	const [imageSrc, setImageSrc] = useState();
 
@@ -40,7 +39,6 @@ export default function UploadComponent() {
 
 		const { error } = await supabase.from("posts").insert({
 			name: name || null,
-			message: message || null,
 			image_name: filePath,
 		});
 
@@ -77,7 +75,6 @@ export default function UploadComponent() {
 		setUploadingError("");
 
 		setName("");
-		setMessage("");
 		setImageFile();
 		setImageSrc();
 
@@ -99,8 +96,8 @@ export default function UploadComponent() {
 							<h1>Nahrát vzkaz</h1>
 							<div className={style.input_inner}>
 								<div>
-									<label htmlFor="name">Jméno (nepovinné)</label>
-									<span>{name.length}/15</span>
+									<label htmlFor="name">Jméno/vzkaz (nepovinné)</label>
+									<span>{name.length}/50</span>
 								</div>
 								<input
 									id="name"
@@ -108,24 +105,11 @@ export default function UploadComponent() {
 									disabled={isLoading}
 									value={name}
 									onChange={(e) => {
-										if (e.target.value.length <= 15) {
+										if (e.target.value.length <= 50) {
 											setName(e.target.value);
 										}
 									}}
 								/>
-							</div>
-							<div className={style.textarea_inner}>
-								<textarea
-									value={message}
-									disabled={isLoading}
-									onChange={(e) => {
-										if (e.target.value.length <= 100) {
-											setMessage(e.target.value);
-										}
-									}}
-									placeholder="Vzkaz"
-								/>
-								<span>{message.length}/100</span>
 							</div>
 							{imageSrc && (
 								<Image

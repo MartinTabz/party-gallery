@@ -186,9 +186,6 @@ export default function ShowCase({ posts: rawPosts, delay: delayString }) {
 									height={800}
 									fetchPriority="high"
 								/>
-								{posts[currentPost].message && (
-									<span>{posts[currentPost].message}</span>
-								)}
 								{posts[currentPost].name && <h1>{posts[currentPost].name}</h1>}
 							</motion.div>
 						</AnimatePresence>
