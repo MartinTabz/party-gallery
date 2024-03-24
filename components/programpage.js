@@ -10,7 +10,7 @@ export default function ProgramPage({ text, imgUrl }) {
 			</div>
 
 			<Link className={style.button} href={"/"}>
-				Úvodní stránka
+				Pokračovat
 			</Link>
 			<div className={style.bg}></div>
 			<Image

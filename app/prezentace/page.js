@@ -75,7 +75,7 @@ export default async function Loading() {
 			};
 		});
 
-		console.log(modifiedPosts)
+		console.log(modifiedPosts);
 
 		const { data: delay, error: settings_error } = await supabase
 			.from("settings")
@@ -92,7 +92,7 @@ export default async function Loading() {
 		return (
 			<main className={style.main}>
 				<div className={style.qr}>
-					<QRCode size={200} value={uploadUrl} viewBox={`0 0 200 200`} />
+					<QRCode size={220} value={uploadUrl} viewBox={`0 0 220 220`} />
 				</div>
 				<ShowCase delay={delay.value} posts={modifiedPosts} />
 			</main>
@@ -146,7 +146,7 @@ export default async function Loading() {
 	return (
 		<main className={style.main}>
 			<div className={style.qr}>
-				<QRCode size={200} value={uploadUrl} viewBox={`0 0 200 200`} />
+				<QRCode size={300} value={uploadUrl} viewBox={`0 0 300 300`} />
 			</div>
 			<ShowCase delay={delay.value} posts={modifiedPosts} />
 		</main>
