@@ -97,6 +97,16 @@ export default function ManageSettings({ settings }) {
 		content: publicPageText,
 	});
 
+	const mainPageEditor = useEditor({
+		extensions: [
+			Document,
+			Paragraph,
+			Text,
+			TextStyle.configure({ types: [TextStyle.name] }),
+		],
+		content: mainPageText,
+	});
+
 	const handleSave = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
@@ -251,10 +261,10 @@ export default function ManageSettings({ settings }) {
 				}
 			}
 
-			if (mainPageText != settings[4].value) {
+			if (mainPageEditor.getHTML() != settings[4].value) {
 				const { error } = await supabase
 					.from("settings")
-					.update({ value: mainPageText })
+					.update({ value: mainPageEditor.getHTML() })
 					.eq("name", settings[4].name)
 					.select();
 
@@ -477,13 +487,21 @@ export default function ManageSettings({ settings }) {
 								</div>
 							</div>
 							<div className={style.main_inputs}>
-								<div className={style.main_input_area}>
-									<label>Text úvodní stránky</label>
-									<textarea
-										placeholder="Sem vložte text..."
-										value={mainPageText}
-										onChange={(e) => setMainPageText(e.target.value)}
-									/>
+								<div className={style.main_page_editor}>
+									{isLoading ? (
+										<div
+											style={{ cursor: "default" }}
+											className={style.editor}
+											dangerouslySetInnerHTML={{
+												__html: mainPageEditor.getHTML(),
+											}}
+										/>
+									) : (
+										<EditorContent
+											className={style.editor}
+											editor={mainPageEditor}
+										/>
+									)}
 								</div>
 								<div className={style.main_input_area}>
 									<label>Popis úvodní stránky</label>

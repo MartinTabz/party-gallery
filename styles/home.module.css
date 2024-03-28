@@ -24,12 +24,41 @@
 	width: var(--width);
 	max-width: 1200px;
 }
+.main_text {
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+	font-size: 3rem;
+	font-weight: 700;
+	line-height: 3rem;
+}
 .area > p {
-	font-size: 1.1rem;
+	font-size: 1.6rem;
 	color: rgb(239, 239, 239);
 	width: 95%;
 	font-weight: 500;
 	max-width: 900px;
+}
+.button {
+	bottom: 15px;
+	box-shadow: 0px 0px 7px 1px rgba(0, 0, 0, 0.2);
+	position: absolute;
+	text-align: center;
+	z-index: 3;
+	background-color: #ffffffae;
+	color: var(--clr-black);
+	text-transform: uppercase;
+	text-decoration: none;
+	font-weight: 700;
+	padding: 8px 30px;
+	font-size: 1.05rem;
+	border-radius: 15px;
+	cursor: pointer;
+	transition: var(--ef-trans);
+}
+.button:hover {
+	background-color: var(--clr-white);
+	color: var(--clr-main);
 }
 .area > a {
 	background-color: var(--clr-main);

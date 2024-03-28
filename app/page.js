@@ -54,15 +54,19 @@ export default async function Home() {
 	return (
 		<main className={style.main_section}>
 			<div className={style.area}>
-				<h1>{mainPageText.value}</h1>
-
+				<div
+					className={style.main_text}
+					dangerouslySetInnerHTML={{ __html: mainPageText.value }}
+				/>
 				<div className={style.qr}>
 					<QRCode size={250} value={uploadUrl} viewBox={`0 0 250 250`} />
 				</div>
 
 				<p>{mainPageDesc.value}</p>
-				<Link href={`/prezentace`}>Prezentace</Link>
 			</div>
+			<Link className={style.button} href={`/prezentace`}>
+				Prezentace
+			</Link>
 			<div className={style.background}>
 				<div></div>
 				<Image

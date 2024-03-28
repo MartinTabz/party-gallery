@@ -160,18 +160,21 @@
 	height: 260px;
 	gap: 10px;
 }
-.main_inputs > .main_input_area:first-child {
-	height: 35%;
+.main_inputs > div:first-child {
+	height: 55%;
 }
 .main_inputs > .main_input_area:last-child {
-	height: 65%;
+	height: 45%;
 }
-.main_input_area {
+.main_input_area,
+.main_page_editor {
 	gap: 5px;
 	display: flex;
 	flex-direction: column;
 }
-.main_input_area > textarea {
+.main_input_area > textarea,
+.main_page_editor > div,
+.main_page_editor textarea {
 	width: 100%;
 	padding: 5px;
 	resize: none;
