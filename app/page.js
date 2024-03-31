@@ -15,7 +15,7 @@ export async function generateMetadata() {
 
 	if (!user) {
 		return {
-			title: "Tady nic není!",
+			title: "Domovská stránka",
 		};
 	}
 
