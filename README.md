@@ -1,36 +1,89 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+# Party Gallery
 
-First, run the development server:
+Stránka s prezentací vzkazů, které vkládají uživatelé. Vzkaz obsahuje text a obrázek. 
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Vstup do aplikace je chráněný pomocí JWT tokenu, který zaměňuje heslo v search parametrech za zašifrovaný cookie. Získat lze z naskenování QR kódu, nebo URL adresy. V aplikaci se nachází stránka s možností stáhnutí jednotlivých vzkazů, která je chráněná odděleným JWT tokenem.
+
+Aplikace je spravována pomocí administrace, ve které se dají mazat vzkazy, nahrávat pozadí a upravovat WYSIWYG editorem text třech informačních stránek, dále se dá upravovat prodlení mezi přepínáním obrázků na stránce s prezentací vzkazů.
+
+
+
+## Environment Variables
+
+Aby bylo možné zapnout tento projekt je potřeba
+
+`NEXT_PUBLIC_DOMAIN` (Např: http://localhost:3000) - bez lomítka na konci
+
+`NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+`NEXT_PUBLIC_SUPABASE_URL`
+
+`HESLO` (Heslo, které je v odkazu pro přístup do aplikace)
+
+`VSECHNY_FOTKY_HESLO` (Heslo, které je v odkazu pro přístup na stránku ke stahování)
+
+`JWT_HESLO` (Heslo, se kterým se šifruje JWT token)
+
+`SUPABASE_SERVICE_KEY`
+
+V souboru ***next.config.mjs***
+```js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+   images: {
+     domains: ['priklad.supabase.co'],
+   },
+ };
+
+export default nextConfig
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Instalace
 
-## Learn More
+Prvně je potřeba naklonovat a poté v root složce projektu:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+  npm install 
+```
+    
+## Databáze (Supabase)
+Tabulka se vzkazy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```sql
+create table public.posts (
+    id uuid not null default gen_random_uuid (),
+    created_at timestamp with time zone not null default now(),
+    image_name text not null,
+    name text null,
+    constraint posts_pkey primary key (id),
+    constraint posts_name_check check ((length(name) < 51))
+) tablespace pg_default;
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Tabulka s nastavením
+```sql
+create table public.settings (
+    id uuid not null default gen_random_uuid (),
+    name text not null,
+    value text not null,
+    rank integer not null default 1,
+    constraint settings_pkey primary key (id),
+    constraint settings_name_key unique (name)
+) tablespace pg_default;
+```
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Data nastavení (Uložit do .csv souboru a vložit do tabulky nastavení)
+```csv
+id,name,value,rank
+86463d54-74e3-4e17-8096-eb722af4d78f,presentation_delay,5000,6
+f8c99882-68cb-4727-9860-284632c9ef8c,program_page_text,<p></p>,8
+3204e4c4-c156-494a-9e5e-a5152490d666,main_page_img,a.jpg,4
+f85edb06-0736-4ce1-8d4b-14393dd4429d,main_page_text,<p></p>,5
+0dc45d96-1813-475c-bd46-356ccb1c78dd,program_page_img,b.jpg,7
+be0d1eee-80e9-4d91-9a33-db66c641ebb7,public_page_img,c.jpg,2
+c7131be3-6fa6-4c8a-b247-d0b783080c51,main_page_description,,1
+be7d85c4-8fbd-4a48-bf17-344c79a11456,public_page_text,<p></p>,3
+```
