@@ -87,3 +87,31 @@ be0d1eee-80e9-4d91-9a33-db66c641ebb7,public_page_img,c.jpg,2
 c7131be3-6fa6-4c8a-b247-d0b783080c51,main_page_description,,1
 be7d85c4-8fbd-4a48-bf17-344c79a11456,public_page_text,<p></p>,3
 ```
+
+Storage buckets
+```sql
+insert into storage.buckets (id, name)
+  values ('photos', 'photos');
+
+create policy "Fotky muze videt kdokoliv" on storage.objects
+  for select using (bucket_id = 'photos');
+
+create policy "Kdokoliv muze nahrat obrazek" on storage.objects
+  for insert with check (bucket_id = 'photos');
+
+create policy "Jen prihlaseny uzivatel muze mazat" on storage.objects
+  for delete to authenticated using (bucket_id = 'photos');
+
+
+insert into storage.buckets (id, name)
+  values ('settings', 'settings');
+
+create policy "Nastaveni muze videt kdokoliv" on storage.objects
+  for select using (bucket_id = 'settings');
+
+create policy "Jen prihlaseny uzivatel muze nahravat" on storage.objects
+  for insert to authenticated using (bucket_id = 'settings');
+
+  create policy "Jen prihlaseny uzivatel muze mazat" on storage.objects
+  for delete to authenticated using (bucket_id = 'settings');
+```
